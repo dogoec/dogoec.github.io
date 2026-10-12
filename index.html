@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dogo · Snacks de un solo ingrediente para perros</title>
+<meta name="description" content="Patitas de pollo, pulmón y orejas de res, aros y tráquea deshidratados. Un solo ingrediente, sin conservantes. Arma tu pedido y lo confirmamos por WhatsApp.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dogo · Snacks de un solo ingrediente para perros">
+<meta property="og:description" content="Arma tu pedido en un minuto y lo confirmamos por WhatsApp.">
+<meta property="og:image" content="assets/og.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="theme-color" content="#0e120b">
+<link rel="preload" as="image" href="assets/hero.jpg" media="(min-width:761px)">
+<link rel="preload" as="image" href="assets/hero-movil.jpg" media="(max-width:760px)">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --noche:#0e120b; --bosque:#161c10; --oliva:#26301a; --musgo:#4f6228; --lima:#c6e05a; --lima-2:#b3cf43;
+  --crema:#f1ece0; --crema-2:#bdb8a7; --tan:#c98a4b; --papel:#f3eee3; --papel-2:#e9e2d3; --tinta:#191c13; --tinta-2:#5b5d4f; --linea:#d9d1bf;
+  --serif:"Fraunces",Georgia,serif; --sans:"Manrope",system-ui,sans-serif;
+  --r:20px; --ease:cubic-bezier(.22,.7,.2,1);
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{font-family:var(--sans);background:var(--noche);color:var(--crema);line-height:1.55;-webkit-font-smoothing:antialiased;font-size:16px}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+button{font:inherit;cursor:pointer;color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+@media (min-width:761px){.wrap{padding:0 32px}}
+.ico{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.rotulo{font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.02em;line-height:1.02}
+.fino{display:block;font-weight:300;font-style:italic}
+.grueso{display:block;font-weight:700}
+
+/* botones */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:999px;padding:15px 26px;font-weight:700;font-size:15px;text-decoration:none;letter-spacing:.01em;transition:transform .25s var(--ease),background-color .25s}
+.btn:active{transform:scale(.97)}
+.btn-lima{background:var(--lima);color:var(--noche)}
+.btn-lima:hover{background:var(--lima-2)}
+.btn-borde{box-shadow:inset 0 0 0 1.5px rgba(241,236,224,.45);color:var(--crema)}
+.btn-borde:hover{box-shadow:inset 0 0 0 1.5px var(--crema)}
+.btn-tinta{background:var(--tinta);color:var(--crema)}
+
+/* chrome */
+.demo-nota{background:var(--lima);color:var(--noche);text-align:center;font-size:12.5px;padding:6px 16px;font-weight:600}
+.top{background:#090b07;color:var(--crema-2);font-size:12.5px;border-bottom:1px solid #1d2416}
+.top .wrap{display:flex;gap:18px;justify-content:space-between;padding-block:8px}
+.top span,.top a{display:inline-flex;gap:6px;align-items:center;text-decoration:none}
+.top .ico{width:15px;height:15px}
+nav.menu{position:sticky;top:0;z-index:30;background:rgba(14,18,11,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(241,236,224,.08)}
+nav.menu .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.logo{display:flex;align-items:baseline;gap:2px;text-decoration:none;font-family:var(--serif);font-weight:700;font-size:30px;letter-spacing:-.04em;line-height:1}
+.logo i{font-style:normal;color:var(--lima)}
+.menu-links{display:flex;gap:30px;font-size:14.5px;font-weight:500}
+.menu-links a{text-decoration:none;color:var(--crema-2);transition:color .2s}
+.menu-links a:hover{color:var(--crema)}
+.btn-carro{background:var(--lima);color:var(--noche);padding:11px 18px;font-size:14px}
+.btn-carro b{background:var(--noche);color:var(--lima);border-radius:999px;min-width:22px;height:22px;display:grid;place-items:center;font-size:12px;padding:0 6px}
+@media (max-width:860px){.menu-links{display:none}}
+@media (max-width:560px){.top .oc{display:none}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:var(--noche)}
+.hero picture img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 30%}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0e120b 0%,rgba(14,18,11,.92) 28%,rgba(14,18,11,.35) 55%,rgba(14,18,11,0) 72%),linear-gradient(0deg,#0e120b 0%,rgba(14,18,11,0) 30%)}
+.hero .wrap{position:relative;z-index:1;min-height:min(86vh,780px);display:flex;flex-direction:column;justify-content:center;padding-top:72px;padding-bottom:40px}
+.hero-txt{max-width:560px}
+.hero .rotulo{color:var(--lima);display:flex;gap:10px;align-items:center}
+.hero .rotulo::before{content:"";width:28px;height:1px;background:currentColor}
+.hero h1{font-size:clamp(46px,6.6vw,92px);margin:20px 0 22px}
+.hero h1 .fino{color:var(--crema-2)}
+.hero p.lead{font-size:18px;color:var(--crema-2);max-width:31em}
+.hero .acc{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.ficha{display:grid;grid-template-columns:repeat(4,auto);justify-content:start;margin-top:64px;border-top:1px solid rgba(241,236,224,.16)}
+.ficha div{padding:18px 32px 0 0;margin-right:32px;border-right:1px solid rgba(241,236,224,.16)}
+.ficha div:last-child{border:0}
+.ficha b{display:block;font-family:var(--serif);font-size:30px;font-weight:600;line-height:1;color:var(--crema)}
+.ficha span{font-size:13px;color:var(--crema-2)}
+@media (max-width:760px){
+  .hero picture img{position:relative;height:auto;aspect-ratio:560/742;object-position:center;max-height:62vh;width:100%;object-fit:cover}
+  .hero::after{background:linear-gradient(0deg,#0e120b 0%,#0e120b 44%,rgba(14,18,11,.55) 62%,rgba(14,18,11,0) 78%)}
+  .hero .wrap{min-height:0;margin-top:-34vh;padding-top:0}
+  .ficha{grid-template-columns:1fr 1fr;margin-top:40px}
+  .ficha div{margin:0;padding:16px 12px 14px 0;border-right:0;border-bottom:1px solid rgba(241,236,224,.12)}
+}
+
+/* secciones */
+section{padding:96px 0;position:relative}
+@media (max-width:760px){section{padding:68px 0}}
+.cab-sec{display:grid;grid-template-columns:1fr minmax(0,380px);gap:32px;align-items:end;margin-bottom:44px}
+.cab-sec h2{font-size:clamp(36px,4.6vw,62px)}
+.cab-sec p{color:var(--crema-2)}
+.cab-sec .rotulo{display:block;margin-bottom:16px;color:var(--lima)}
+@media (max-width:760px){.cab-sec{grid-template-columns:1fr;gap:16px;margin-bottom:32px}}
+.claro{background:var(--papel);color:var(--tinta)}
+.claro .cab-sec p{color:var(--tinta-2)}
+.claro .cab-sec .rotulo{color:var(--musgo)}
+.verde{background:radial-gradient(120% 90% at 85% 0%,#2f3d1c 0%,var(--bosque) 55%,var(--noche) 100%)}
+
+/* perros / guía */
+.perros{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media (max-width:860px){.perros{grid-template-columns:1fr 1fr 1fr;overflow-x:auto;scroll-snap-type:x mandatory;grid-template-columns:repeat(3,78%);padding-bottom:8px;margin:0 -16px;padding-inline:16px;scrollbar-width:none}.perros>*{scroll-snap-align:start}}
+.perro{position:relative;border:0;padding:0;border-radius:var(--r);overflow:hidden;text-align:left;background:var(--oliva);box-shadow:0 0 0 1px rgba(241,236,224,.1);transition:box-shadow .35s var(--ease),transform .35s var(--ease)}
+.perro img{width:100%;aspect-ratio:4/5;object-fit:cover;transition:transform .8s var(--ease)}
+.perro:hover img{transform:scale(1.04)}
+.perro .pie{position:absolute;left:0;right:0;bottom:0;padding:60px 20px 20px;background:linear-gradient(0deg,rgba(14,18,11,.92),rgba(14,18,11,0))}
+.perro .pie small{color:var(--lima);display:block;margin-bottom:6px}
+.perro .pie strong{display:block;font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.1}
+.perro .pie em{font-style:normal;display:inline-flex;gap:6px;margin-top:12px;font-size:13.5px;font-weight:700;color:var(--crema-2)}
+.perro[aria-pressed="true"]{box-shadow:0 0 0 2px var(--lima)}
+.perro[aria-pressed="true"] .pie em{color:var(--lima)}
+.reco{margin-top:22px;border:1px solid rgba(241,236,224,.14);border-radius:var(--r);padding:26px;display:grid;grid-template-columns:1fr auto;gap:22px 32px;align-items:center;background:rgba(14,18,11,.45)}
+.reco ul{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.reco li{border:1px solid rgba(241,236,224,.18);border-radius:999px;padding:8px 14px;font-size:14px}
+.reco li b{color:var(--lima);font-weight:600;margin-left:6px}
+.reco h3{font-size:24px;margin-bottom:12px}
+.reco .tot{text-align:right}
+.reco .tot b{display:block;font-family:var(--serif);font-size:34px;line-height:1;margin:4px 0 14px}
+.reco .vacio{color:var(--crema-2);grid-column:1/-1}
+@media (max-width:760px){.reco{grid-template-columns:1fr}.reco .tot{text-align:left}}
+
+/* catálogo */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media (max-width:960px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:600px){.grid{grid-template-columns:1fr}}
+.prod{background:#fbf8f1;border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 0 var(--linea),0 0 0 1px var(--papel-2);transition:box-shadow .4s var(--ease)}
+.prod.on{box-shadow:0 0 0 2px var(--musgo)}
+.prod .foto{position:relative;overflow:hidden;background:var(--oliva)}
+.prod .foto img{width:100%;aspect-ratio:5/4;object-fit:cover;transition:transform .9s var(--ease)}
+.prod:hover .foto img{transform:scale(1.05)}
+.prod .num{position:absolute;right:14px;top:12px;font-family:var(--serif);font-style:italic;font-weight:300;font-size:22px;color:var(--crema)}
+.prod .tag{position:absolute;left:14px;top:14px;background:var(--lima);color:var(--noche);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:999px}
+.prod .cuerpo{padding:22px 22px 20px;display:flex;flex-direction:column;gap:14px;flex:1}
+.prod h3{font-size:25px;line-height:1.1}
+.prod .pack{font-size:13px;color:var(--tinta-2);margin-top:4px;display:block}
+.spec{display:grid;grid-template-columns:auto 1fr;gap:7px 16px;font-size:13.5px;border-top:1px solid var(--linea);padding-top:14px;flex:1;align-content:start}
+.spec dt{color:var(--tinta-2)}
+.spec dd{font-weight:600;text-align:right}
+.mast{display:inline-flex;gap:3px;vertical-align:middle;margin-left:8px}
+.mast i{width:16px;height:5px;border-radius:2px;background:var(--papel-2)}
+.mast i.on{background:var(--musgo)}
+.prod .pie{display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid var(--linea);padding-top:16px}
+.precio{font-family:var(--serif);font-size:30px;font-weight:600;letter-spacing:-.02em;line-height:1}
+.precio small{display:block;font-family:var(--sans);font-size:12px;font-weight:500;color:var(--tinta-2);letter-spacing:0;margin-top:4px}
+.add{border:0;border-radius:999px;background:var(--tinta);color:var(--crema);font-weight:700;font-size:14px;padding:12px 20px;transition:transform .2s var(--ease)}
+.add:active{transform:scale(.96)}
+.step{display:inline-flex;align-items:center;border-radius:999px;background:var(--musgo);color:#fff}
+.step button{width:42px;height:42px;border:0;background:none;font-size:20px;border-radius:999px}
+.step output{min-width:22px;text-align:center;font-weight:700}
+
+/* línea completa */
+.linea-sec{padding:0;background:var(--noche)}
+.linea-fig{position:relative;margin:0}
+.linea-fig img{width:100%;aspect-ratio:1376/768;object-fit:cover}
+.marca-n{position:absolute;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;background:var(--lima);color:var(--noche);display:grid;place-items:center;font-weight:700;font-size:13px;box-shadow:0 0 0 6px rgba(198,224,90,.25)}
+.linea-fig figcaption{position:absolute;left:0;right:0;bottom:0;padding:120px 0 30px;background:linear-gradient(0deg,rgba(14,18,11,.92),rgba(14,18,11,0))}
+.linea-fig figcaption .wrap{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap}
+.linea-fig h2{font-size:clamp(28px,3.4vw,46px)}
+.ley{display:flex;gap:8px 20px;flex-wrap:wrap;font-size:13.5px;color:var(--crema-2);list-style:none;padding:0;max-width:640px}
+.ley b{color:var(--lima);margin-right:6px}
+@media (max-width:760px){
+  .linea-fig img{aspect-ratio:4/3}
+  .marca-n{width:26px;height:26px;font-size:11px;box-shadow:0 0 0 4px rgba(198,224,90,.25)}
+  .linea-fig figcaption{position:static;background:var(--noche);padding:22px 0 8px}
+}
+
+/* proceso */
+.pasos{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;position:relative;counter-reset:p}
+.pasos::before{content:"";position:absolute;left:0;right:0;top:30px;height:1px;background:rgba(241,236,224,.18);transform-origin:left}
+.paso{position:relative}
+.paso .circ{width:60px;height:60px;border-radius:50%;border:1px solid rgba(198,224,90,.6);background:var(--bosque);color:var(--lima);display:grid;place-items:center;margin-bottom:22px;position:relative}
+.paso .rotulo{color:var(--crema-2);display:block;margin-bottom:8px}
+.paso h3{font-size:22px;margin-bottom:8px}
+.paso p{color:var(--crema-2);font-size:15px}
+@media (max-width:860px){.pasos{grid-template-columns:1fr 1fr}.pasos::before{display:none}}
+@media (max-width:520px){.pasos{grid-template-columns:1fr}}
+
+/* cómo pedir */
+.pedir{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center}
+.pedir ol{list-style:none;padding:0;display:grid;gap:4px}
+.pedir li{display:grid;grid-template-columns:52px 1fr;gap:18px;padding:20px 0;border-bottom:1px solid var(--linea)}
+.pedir li:last-child{border:0}
+.pedir li span{width:44px;height:44px;border-radius:50%;background:var(--tinta);color:var(--lima);display:grid;place-items:center;font-family:var(--serif);font-weight:600;font-size:18px}
+.pedir li h3{font-size:21px;margin-bottom:4px}
+.pedir li p{color:var(--tinta-2);font-size:15px}
+.chat{background:#e7e0d1;border-radius:28px;padding:22px;display:grid;gap:10px;font-size:14px;box-shadow:0 30px 60px -30px rgba(25,28,19,.45)}
+.chat .cab{display:flex;gap:10px;align-items:center;padding-bottom:12px;border-bottom:1px solid #d3cab7;margin-bottom:4px}
+.chat .cab i{width:36px;height:36px;border-radius:50%;background:var(--tinta);color:var(--lima);display:grid;place-items:center;font-style:normal;font-family:var(--serif);font-weight:700}
+.chat .cab small{display:block;color:var(--tinta-2)}
+.bur{background:#fff;border-radius:16px 16px 16px 4px;padding:11px 14px;max-width:88%}
+.bur.yo{justify-self:end;background:#d9f2c2;border-radius:16px 16px 4px 16px}
+.bur .f{display:flex;justify-content:space-between;gap:18px}
+.bur hr{border:0;border-top:1px dashed #9db58a;margin:6px 0}
+@media (max-width:860px){.pedir{grid-template-columns:1fr;gap:36px}}
+
+/* faq */
+.faq{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px}
+.faq h2{font-size:clamp(34px,4vw,52px);margin-bottom:18px}
+.faq p.lead{color:var(--tinta-2);margin-bottom:24px}
+details{border-bottom:1px solid var(--linea);padding:20px 0}
+details:first-of-type{border-top:1px solid var(--linea)}
+summary{font-weight:700;font-size:17px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";width:12px;height:12px;flex:none;margin-top:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);transition:transform .3s var(--ease)}
+details[open] summary::after{transform:rotate(225deg)}
+details p{color:var(--tinta-2);margin-top:10px;max-width:46em}
+@media (max-width:860px){.faq{grid-template-columns:1fr;gap:28px}}
+
+/* pie */
+footer{background:#090b07;color:var(--crema-2);padding:72px 0 120px;font-size:14.5px}
+.cols{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px}
+.cols h3{font-family:var(--sans);font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--crema);margin-bottom:16px}
+.cols ul{list-style:none;padding:0;display:grid;gap:10px}
+.cols a{text-decoration:none}
+.cols a:hover{color:var(--crema)}
+.redes{display:flex;gap:10px;margin-top:20px}
+.redes a{width:40px;height:40px;border-radius:50%;border:1px solid #2a3320;display:grid;place-items:center}
+.legal{border-top:1px solid #1d2416;margin-top:48px;padding-top:22px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px}
+@media (max-width:860px){.cols{grid-template-columns:1fr 1fr}}
+
+/* carrito */
+.barra{position:fixed;left:12px;right:12px;bottom:12px;z-index:40;max-width:560px;margin:0 auto;background:var(--tinta);color:var(--crema);border-radius:999px;display:flex;justify-content:space-between;align-items:center;padding:8px 8px 8px 22px;box-shadow:0 18px 40px -16px rgba(0,0,0,.7),0 0 0 1px rgba(241,236,224,.1);transform:translateY(150%);visibility:hidden;transition:transform .45s var(--ease),visibility .45s}
+.barra.ver{transform:none;visibility:visible}
+.barra .btn{padding:11px 18px}
+dialog.carro{border:0;padding:0;margin:0 0 0 auto;height:100%;max-height:100dvh;width:min(460px,100%);background:var(--papel);color:var(--tinta)}
+dialog.carro::backdrop{background:rgba(9,11,7,.6)}
+.carro form{display:flex;flex-direction:column;height:100%}
+.carro .cab{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--linea)}
+.carro .cab h2{font-size:28px}
+.carro .cab button{border:0;background:none;font-size:28px;line-height:1;width:44px;height:44px}
+.carro .cuerpo{flex:1;overflow:auto;padding:16px 22px;display:grid;gap:14px;align-content:start}
+.lin{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.lin img{width:52px;height:52px;border-radius:12px;object-fit:cover;flex:none}
+.lin .n{flex:1}
+.lin small{display:block;color:var(--tinta-2)}
+.carro .step button{width:36px;height:36px}
+label.campo{display:grid;gap:6px;font-size:13.5px;font-weight:700}
+.campo input{font:inherit;font-weight:500;border:1.5px solid var(--linea);border-radius:12px;padding:12px 14px;background:#fff;color:var(--tinta)}
+.campo input:focus{outline:2px solid var(--musgo);outline-offset:1px;border-color:transparent}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg label{border:1.5px solid var(--linea);border-radius:12px;padding:12px;display:flex;gap:8px;align-items:center;font-weight:600;cursor:pointer;background:#fff}
+.seg label:has(input:checked){border-color:var(--musgo);background:#eef3dc}
+.tot{border-top:1px solid var(--linea);padding:16px 22px 22px;display:grid;gap:6px}
+.tot .lin:last-of-type{font-size:20px;font-weight:800}
+.err{color:#a3261b;font-size:14px;min-height:1em}
+.vacio{color:var(--tinta-2);text-align:center;padding:30px 0}
+.ok-ico{stroke-dasharray:60;stroke-dashoffset:60;animation:dibuja .6s var(--ease) forwards}
+@keyframes dibuja{to{stroke-dashoffset:0}}
+
+/* movimiento (perfil producto: 0.4–0.6 s) */
+@supports (animation-timeline: view()){
+  .ap{animation:sube linear both;animation-timeline:view();animation-range:entry 0% entry 35%}
+  .prod:nth-child(3n+2).ap{animation-range:entry 5% entry 40%}
+  .prod:nth-child(3n).ap{animation-range:entry 10% entry 45%}
+  @keyframes sube{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+  .pasos::before{animation:traza linear both;animation-timeline:view();animation-range:entry 20% cover 45%}
+  @keyframes traza{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+}
+.pop{animation:pop .4s var(--ease)}
+@keyframes pop{50%{transform:scale(1.2)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.ok-ico{stroke-dashoffset:0}}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LocalBusiness","name":"Dogo","description":"Snacks de un solo ingrediente para perros","image":"assets/og.jpg","address":{"@type":"PostalAddress","addressLocality":"Quito","addressCountry":"EC"},"priceRange":"$2,50 – $8,00"}
+</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M4 20l1.3-4A8 8 0 1 1 8 18.7Z"/><path d="M9 9.5c.5 2.5 2.5 4.5 5 5l1.2-1.3 2 1-.6 1.6c-3.5.4-8.3-4.4-7.9-7.9L10.3 7l1 2Z"/></symbol>
+  <symbol id="i-carro" viewBox="0 0 24 24"><path d="M5 7h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8Z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/></symbol>
+  <symbol id="i-reloj" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5a7 7 0 0 0-14 0C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+  <symbol id="i-flecha" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-origen" viewBox="0 0 24 24"><path d="M4 20h16M6 20V10l6-5 6 5v10"/><path d="M10 20v-5h4v5"/></symbol>
+  <symbol id="i-cuchillo" viewBox="0 0 24 24"><path d="M4 20 15.5 8.5"/><path d="M14 4.5c2.5-1 5 1.5 4 4l-3 3-4-4Z"/></symbol>
+  <symbol id="i-temp" viewBox="0 0 24 24"><path d="M10 4a2 2 0 0 1 4 0v9.3a4 4 0 1 1-4 0Z"/><path d="M12 9v7"/></symbol>
+  <symbol id="i-bolsa" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7Z"/><path d="M6 8l1.5-4h9L18 8M10 12h4"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><circle cx="16.8" cy="7.2" r=".6"/></symbol>
+  <symbol id="i-tt" viewBox="0 0 24 24"><path d="M14 4v10.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 4c.4 2.4 2 4 4.5 4.3"/></symbol>
+</svg>
+
+<div class="top"><div class="wrap">
+  <span><svg class="ico"><use href="#i-reloj"/></svg><span data-t="horario"></span></span>
+  <span class="oc"><svg class="ico"><use href="#i-pin"/></svg>Entregas en <span data-t="ciudad"></span> y los valles</span>
+  <a class="wa-link" href="#"><svg class="ico"><use href="#i-wa"/></svg>Escríbenos</a>
+</div></div>
+
+<nav class="menu" aria-label="Principal"><div class="wrap">
+  <a class="logo" href="#" aria-label="Dogo, inicio">dogo<i>.</i></a>
+  <div class="menu-links"><a href="#para-quien">Para quién</a><a href="#catalogo">Catálogo</a><a href="#proceso">Cómo lo hacemos</a><a href="#faq">Preguntas</a></div>
+  <button class="btn btn-carro" type="button" data-abrir aria-label="Ver mi pedido"><svg class="ico" style="width:18px;height:18px"><use href="#i-carro"/></svg>Pedido <b id="n-carro">0</b></button>
+</div></nav>
+
+<main>
+<header class="hero">
+  <picture>
+    <source media="(max-width:760px)" srcset="assets/hero-movil.jpg" width="560" height="742">
+    <img src="assets/hero.jpg" width="1264" height="848" alt="Perro mestizo negro y fuego sentado sobre un banco de madera frente a un fondo verde oliva" fetchpriority="high">
+  </picture>
+  <div class="wrap">
+    <div class="hero-txt">
+      <span class="rotulo">Snacks para perros · <span data-t="ciudad"></span></span>
+      <h1><span class="fino">Un ingrediente.</span><span class="grueso">Nada más.</span></h1>
+      <p class="lead">Patitas de pollo, pulmón, orejas y tráquea de res deshidratados despacio, sin sal ni conservantes. Lo que dice la bolsa es lo único que lleva adentro.</p>
+      <div class="acc"><a class="btn btn-lima" href="#catalogo">Armar mi pedido <svg class="ico" style="width:18px;height:18px"><use href="#i-flecha"/></svg></a><a class="btn btn-borde" href="#para-quien">¿Cuál le doy a mi perro?</a></div>
+    </div>
+    <div class="ficha" aria-label="En resumen">
+      <div><b>1</b><span>ingrediente por bolsa</span></div>
+      <div><b>0</b><span>sal ni conservantes</span></div>
+      <div><b>5</b><span>cortes de pollo y res</span></div>
+      <div><b id="desde"></b><span>el pack más pequeño</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="para-quien" class="verde"><div class="wrap">
+  <div class="cab-sec ap">
+    <div><span class="rotulo">01 · Para quién</span><h2><span class="fino">Cada perro</span><span class="grueso">muerde distinto.</span></h2></div>
+    <p>Elige el que más se parece al tuyo y te armamos una combinación para empezar. La puedes cambiar en el pedido.</p>
+  </div>
+  <div class="perros" id="perros"></div>
+  <div class="reco" id="reco" aria-live="polite"><p class="vacio">Toca una foto para ver su combinación recomendada.</p></div>
+</div></section>
+
+<section id="catalogo" class="claro"><div class="wrap">
+  <div class="cab-sec ap">
+    <div><span class="rotulo">02 · Catálogo</span><h2><span class="fino">Cinco cortes,</span><span class="grueso">cero relleno.</span></h2></div>
+    <p>Precio por pack. Combina lo que quieras en un mismo pedido; desde <span class="gratis2"></span> el envío va por nuestra cuenta.</p>
+  </div>
+  <div class="grid" id="grid"></div>
+</div></section>
+
+<section class="linea-sec" aria-labelledby="linea-tit">
+  <figure class="linea-fig">
+    <img src="assets/linea.jpg" width="1376" height="768" loading="lazy" alt="Los cinco snacks Dogo sobre papel verde: patitas de pollo, pulmón, orejas, aros de tráquea y tráquea entera, junto a bolsas kraft">
+    <span class="marca-n" style="left:16%;top:46%">1</span><span class="marca-n" style="left:34%;top:48%">2</span><span class="marca-n" style="left:52%;top:47%">3</span><span class="marca-n" style="left:70%;top:46%">4</span><span class="marca-n" style="left:86%;top:47%">5</span>
+    <figcaption><div class="wrap">
+      <h2 id="linea-tit"><span class="fino">Sin empaque</span><span class="grueso">de por medio.</span></h2>
+      <ol class="ley"><li><b>1</b>Patitas de pollo</li><li><b>2</b>Pulmón de res</li><li><b>3</b>Orejas de res</li><li><b>4</b>Aros de tráquea</li><li><b>5</b>Tráquea entera</li></ol>
+    </div></figcaption>
+  </figure>
+</section>
+
+<section id="proceso" class="verde"><div class="wrap">
+  <div class="cab-sec ap">
+    <div><span class="rotulo">03 · Cómo lo hacemos</span><h2><span class="fino">Despacio,</span><span class="grueso">y a mano.</span></h2></div>
+    <p>Nada de procesos industriales: lotes pequeños que salen la misma semana en que se hacen.</p>
+  </div>
+  <div class="pasos">
+    <div class="paso ap"><div class="circ"><svg class="ico"><use href="#i-origen"/></svg></div><span class="rotulo">Paso 1</span><h3>Origen local</h3><p>Compramos los cortes a proveedores de la Sierra que conocemos por nombre.</p></div>
+    <div class="paso ap"><div class="circ"><svg class="ico"><use href="#i-cuchillo"/></svg></div><span class="rotulo">Paso 2</span><h3>Limpieza y corte</h3><p>Se limpian, se quita el exceso de grasa y se cortan al tamaño de cada pack.</p></div>
+    <div class="paso ap"><div class="circ"><svg class="ico"><use href="#i-temp"/></svg></div><span class="rotulo">Paso 3</span><h3>Deshidratado lento</h3><p>Horas a baja temperatura, hasta quedar secos y crocantes. Sin hornear ni freír.</p></div>
+    <div class="paso ap"><div class="circ"><svg class="ico"><use href="#i-bolsa"/></svg></div><span class="rotulo">Paso 4</span><h3>Sellado y entrega</h3><p>Bolsa kraft sellada, con la fecha del lote. Te llega en la semana.</p></div>
+  </div>
+</div></section>
+
+<section id="como" class="claro"><div class="wrap pedir">
+  <div>
+    <div class="cab-sec ap" style="grid-template-columns:1fr;margin-bottom:12px">
+      <div><span class="rotulo">04 · Pedir</span><h2><span class="fino">Tres pasos</span><span class="grueso">y listo.</span></h2></div>
+    </div>
+    <ol>
+      <li><span>1</span><div><h3>Arma tu pedido</h3><p>Suma los snacks que quieras y mira el total al instante.</p></div></li>
+      <li><span>2</span><div><h3>Confírmalo por WhatsApp</h3><p>Se abre WhatsApp con tu pedido ya escrito. Solo lo envías.</p></div></li>
+      <li><span>3</span><div><h3>Recibe y paga</h3><p>Te lo llevamos o lo retiras. Pagas por transferencia o al recibir.</p></div></li>
+    </ol>
+  </div>
+  <div class="chat ap" aria-hidden="true">
+    <div class="cab"><i>d.</i><div><b>Dogo</b><small>en línea</small></div></div>
+    <div class="bur yo"><b>Pedido D4F2K</b><div class="f"><span>2 × Patitas de pollo</span><span>$5,00</span></div><div class="f"><span>1 × Orejas de res</span><span>$8,00</span></div><hr><div class="f"><b>Total</b><b>$13,00</b></div><small>Entrega en Cumbayá</small></div>
+    <div class="bur">¡Recibido, Ana! Te lo llevamos hoy entre 4 y 6 de la tarde.</div>
+    <div class="bur yo">Perfecto, gracias. Max ya está en la puerta.</div>
+  </div>
+</div></section>
+
+<section id="faq" class="claro" style="background:var(--papel-2)"><div class="wrap faq">
+  <div class="ap">
+    <h2><span class="fino">Lo que</span><span class="grueso">siempre preguntan</span></h2>
+    <p class="lead">¿Algo más? Escríbenos y te responde una persona, no un robot.</p>
+    <a class="btn btn-tinta wa-link" href="#"><svg class="ico" style="width:18px;height:18px"><use href="#i-wa"/></svg>Preguntar por WhatsApp</a>
+  </div>
+  <div>
+    <details><summary>¿Llevan conservantes, sal o saborizantes?</summary><p>No. Cada bolsa trae un solo ingrediente, deshidratado a baja temperatura. Por eso se guardan en un lugar fresco y seco, y duran semanas, no años.</p></details>
+    <details><summary>¿Cuántos le puedo dar al día?</summary><p>Como premio, que no pasen del 10 % de su comida diaria. Si tu perro tiene alguna condición de salud, consulta antes con tu veterinario.</p></details>
+    <details><summary>¿Son seguros para cachorros?</summary><p>Desde los 4 meses, con supervisión. Para empezar recomendamos el pulmón, que es liviano y se parte fácil.</p></details>
+    <details><summary>¿A dónde hacen envíos y cuánto cuesta?</summary><p>Entregamos en <span data-t="ciudad"></span> y los valles. El envío cuesta <span id="envio-txt"></span> y es gratis desde <span class="gratis2"></span>.</p></details>
+    <details><summary>¿Cómo pago?</summary><p>Por transferencia o en efectivo al recibir. Te pasamos los datos por WhatsApp al confirmar el pedido.</p></details>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><a class="logo" href="#" style="color:var(--crema)">dogo<i>.</i></a><p style="margin-top:14px;max-width:24em" data-t="lema"></p>
+      <div class="redes"><a href="#" aria-label="Instagram de Dogo"><svg class="ico" style="width:18px;height:18px"><use href="#i-ig"/></svg></a><a href="#" aria-label="TikTok de Dogo"><svg class="ico" style="width:18px;height:18px"><use href="#i-tt"/></svg></a><a class="wa-link" href="#" aria-label="WhatsApp de Dogo"><svg class="ico" style="width:18px;height:18px"><use href="#i-wa"/></svg></a></div></div>
+    <div><h3>Tienda</h3><ul><li><a href="#catalogo">Catálogo</a></li><li><a href="#para-quien">Combos por tamaño</a></li><li><a href="#proceso">Cómo lo hacemos</a></li></ul></div>
+    <div><h3>Pedidos</h3><ul><li>Envío <span id="envio-txt2"></span></li><li>Gratis desde <span class="gratis2"></span></li><li>Transferencia o efectivo</li></ul></div>
+    <div><h3>Contacto</h3><ul><li><a class="wa-link" href="#">WhatsApp</a></li><li data-t="horario"></li><li><span data-t="ciudad"></span>, Ecuador</li></ul></div>
+  </div>
+  <div class="legal"><span>© 2026 Dogo. Snacks para perros hechos en <span data-t="ciudad"></span>.</span><span>No reemplaza la alimentación principal de tu perro.</span></div>
+</div></footer>
+
+<div class="barra" id="barra" role="region" aria-label="Resumen del pedido">
+  <span><b id="barra-n">0 productos</b> · <span id="barra-t">$0,00</span></span>
+  <button class="btn btn-lima" type="button" data-abrir>Ver mi pedido</button>
+</div>
+
+<dialog class="carro" id="carro" aria-labelledby="carro-tit">
+  <form method="dialog" novalidate>
+    <div class="cab"><h2 id="carro-tit">Tu pedido</h2><button value="cancel" aria-label="Cerrar" formnovalidate>×</button></div>
+    <div class="cuerpo" id="cuerpo"></div>
+    <div class="tot" id="tot"></div>
+  </form>
+</dialog>
+
+<script src="config.js"></script>
+<script src="comun.js"></script>
+<script>
+(() => {
+  const { T, LS, productos, track, usd, tel, canal } = SP;
+  const P = productos();
+  const porId = Object.fromEntries(P.map(p => [p.id, p]));
+  let carro = LS.get('dogo_carro', {});
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  document.querySelectorAll('[data-t]').forEach(e => e.textContent = T[e.dataset.t]);
+  $('#desde').textContent = usd(Math.min(...P.map(p => p.precio))).replace(',00', '');
+  $('#envio-txt').textContent = $('#envio-txt2').textContent = usd(T.envio.domicilio);
+  document.querySelectorAll('.gratis2').forEach(e => e.textContent = usd(T.envio.gratisDesde).replace(',00', ''));
+  const waHola = 'https://wa.me/' + T.wa + '?text=' + encodeURIComponent('Hola Dogo, quiero información de los snacks para mi perro.');
+  document.querySelectorAll('.wa-link').forEach(a => { a.href = waHola; a.target = '_blank'; a.rel = 'noopener'; a.addEventListener('click', () => track('wa_info')); });
+  track('visita');
+
+  // catálogo
+  const grid = $('#grid');
+  grid.innerHTML = P.map((p, i) => `
+    <article class="prod ap" data-id="${p.id}">
+      <div class="foto"><img src="${p.foto}" width="400" height="500" loading="lazy" alt="${esc(p.nombre)} deshidratados">${p.tag ? `<span class="tag">${p.tag}</span>` : ''}<span class="num">${String(i + 1).padStart(2, '0')}</span></div>
+      <div class="cuerpo">
+        <div><h3>${p.nombre}</h3><span class="pack">${p.pack} · ${p.desc}</span></div>
+        <dl class="spec"><dt>Ingrediente</dt><dd>${p.ingrediente}</dd><dt>Textura</dt><dd>${p.textura}</dd>
+          <dt>Masticación</dt><dd>${['Corta', 'Media', 'Larga'][p.mastica - 1]}<span class="mast" aria-hidden="true">${[1, 2, 3].map(n => `<i class="${n <= p.mastica ? 'on' : ''}"></i>`).join('')}</span></dd></dl>
+        <div class="pie"><span class="precio">${usd(p.precio)}<small>${p.pack}</small></span><span class="ctrl"></span></div>
+      </div>
+    </article>`).join('');
+  let vio = false;
+  new IntersectionObserver((en, o) => { if (en.some(e => e.isIntersecting) && !vio) { vio = true; track('catalogo'); o.disconnect(); } }, { threshold: .2 }).observe(grid);
+
+  function ctrl(id) {
+    const n = carro[id] || 0;
+    return n ? `<span class="step"><button type="button" data-menos="${id}" aria-label="Quitar uno">−</button><output>${n}</output><button type="button" data-mas="${id}" aria-label="Agregar uno">+</button></span>`
+             : `<button type="button" class="add" data-mas="${id}">Agregar</button>`;
+  }
+  function cambiar(id, d) {
+    const n = Math.max(0, (carro[id] || 0) + d);
+    if (n) carro[id] = n; else delete carro[id];
+    if (d > 0) track('carrito', { prod: id });
+    LS.set('dogo_carro', carro); pintar();
+    const c = $('#n-carro'); c.classList.remove('pop'); void c.offsetWidth; c.classList.add('pop');
+  }
+  document.addEventListener('click', e => {
+    const m = e.target.closest('[data-mas]'), r = e.target.closest('[data-menos]');
+    if (m) cambiar(m.dataset.mas, 1); else if (r) cambiar(r.dataset.menos, -1);
+    if (e.target.closest('[data-abrir]')) abrir();
+  });
+
+  const subtotal = () => Object.entries(carro).reduce((s, [id, n]) => s + (porId[id] ? porId[id].precio * n : 0), 0);
+  const unidades = () => Object.values(carro).reduce((s, n) => s + n, 0);
+  const envio = (sub, modo) => modo === 'domicilio' && sub < T.envio.gratisDesde ? T.envio.domicilio : 0;
+
+  function pintar() {
+    document.querySelectorAll('.prod').forEach(a => { const id = a.dataset.id; a.querySelector('.ctrl').innerHTML = ctrl(id); a.classList.toggle('on', !!carro[id]); });
+    const n = unidades();
+    $('#n-carro').textContent = n;
+    $('#barra-n').textContent = n + (n === 1 ? ' producto' : ' productos');
+    $('#barra-t').textContent = usd(subtotal());
+    $('#barra').classList.toggle('ver', n > 0 && !$('#carro').open);
+    if ($('#carro').open && !listo) pintarCarro();
+  }
+
+  // para quién (guía por tamaño con foto)
+  $('#perros').innerHTML = Object.entries(T.guia).map(([k, g]) => `
+    <button type="button" class="perro ap" data-tam="${k}" aria-pressed="false">
+      <img src="${g.foto}" width="640" height="794" loading="lazy" alt="${esc(g.alt)}">
+      <span class="pie"><small class="rotulo">${g.txt.split('(')[1].replace(')', '')}</small><strong>${g.titulo}</strong><em>Ver su combinación <svg class="ico" style="width:16px;height:16px"><use href="#i-flecha"/></svg></em></span>
+    </button>`).join('');
+  $('#perros').addEventListener('click', e => {
+    const b = e.target.closest('[data-tam]'); if (!b) return;
+    document.querySelectorAll('.perro').forEach(x => x.setAttribute('aria-pressed', x === b));
+    const g = T.guia[b.dataset.tam], items = g.ids.map(id => porId[id]).filter(Boolean);
+    track('guia', { tam: b.dataset.tam });
+    $('#reco').innerHTML = `<div><h3>${g.titulo}</h3><ul>${items.map(p => `<li>${p.nombre}<b>${usd(p.precio)}</b></li>`).join('')}</ul></div>
+      <div class="tot"><span class="rotulo" style="color:var(--crema-2)">Combo de prueba</span><b>${usd(items.reduce((s, p) => s + p.precio, 0))}</b>
+      <button type="button" class="btn btn-lima" data-combo="${g.ids.join(',')}">Agregar el combo</button></div>`;
+    if (innerWidth < 860) $('#reco').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+  $('#reco').addEventListener('click', e => {
+    const b = e.target.closest('[data-combo]'); if (!b) return;
+    b.dataset.combo.split(',').forEach(id => { carro[id] = (carro[id] || 0) + 1; track('carrito', { prod: id }); });
+    LS.set('dogo_carro', carro); pintar(); abrir();
+  });
+
+  // carrito y envío por WhatsApp
+  const dlg = $('#carro');
+  let listo = false;
+  let datos = LS.get('dogo_cliente', { nombre: '', tel: '', sector: '', entrega: 'domicilio', nota: '' });
+  function abrir() { listo = false; pintarCarro(); dlg.showModal(); $('#barra').classList.remove('ver'); }
+  dlg.addEventListener('close', pintar);
+
+  function pintarCarro() {
+    const ids = Object.keys(carro).filter(id => porId[id]);
+    if (!ids.length) { $('#cuerpo').innerHTML = '<p class="vacio">Tu pedido está vacío.<br>Agrega algo del catálogo.</p>'; $('#tot').innerHTML = ''; return; }
+    $('#cuerpo').innerHTML = ids.map(id => { const p = porId[id]; return `<div class="lin"><img src="${p.foto}" alt="" width="52" height="52"><span class="n"><b>${p.nombre}</b><small>${p.pack} · ${usd(p.precio)}</small></span>${ctrl(id)}</div>`; }).join('') + `
+      <hr style="border:0;border-top:1px solid var(--linea)">
+      <label class="campo">Tu nombre<input id="f-nombre" autocomplete="name" value="${esc(datos.nombre)}"></label>
+      <label class="campo">Tu WhatsApp<input id="f-tel" inputmode="tel" autocomplete="tel" placeholder="09XXXXXXXX" value="${esc(datos.tel)}"></label>
+      <div class="seg" role="radiogroup" aria-label="Entrega">
+        <label><input type="radio" name="entrega" value="domicilio" ${datos.entrega !== 'retiro' ? 'checked' : ''}> A domicilio</label>
+        <label><input type="radio" name="entrega" value="retiro" ${datos.entrega === 'retiro' ? 'checked' : ''}> Retiro</label>
+      </div>
+      <label class="campo" id="c-sector">Sector o barrio<input id="f-sector" value="${esc(datos.sector)}" placeholder="Ej.: Cumbayá"></label>
+      <label class="campo">Nota (opcional)<input id="f-nota" value="${esc(datos.nota)}" placeholder="Ej.: es para un perro de 30 kg"></label>`;
+    $('#cuerpo').querySelectorAll('input').forEach(i => i.addEventListener('input', () => { leer(); if (i.name === 'entrega') pintarTot(); }));
+    pintarTot();
+  }
+  function leer() {
+    const v = id => (document.getElementById(id) || {}).value || '';
+    datos = { nombre: v('f-nombre').trim(), tel: v('f-tel').trim(), sector: v('f-sector').trim(), nota: v('f-nota').trim(),
+      entrega: (document.querySelector('input[name=entrega]:checked') || {}).value || 'domicilio' };
+    LS.set('dogo_cliente', datos);
+    const cs = $('#c-sector'); if (cs) cs.style.display = datos.entrega === 'retiro' ? 'none' : '';
+  }
+  function pintarTot() {
+    leer();
+    const sub = subtotal(), env = envio(sub, datos.entrega), falta = T.envio.gratisDesde - sub;
+    $('#tot').innerHTML = `
+      <div class="lin"><span>Subtotal</span><span>${usd(sub)}</span></div>
+      <div class="lin"><span>Envío</span><span>${datos.entrega === 'retiro' ? 'Retiro' : env ? usd(env) : 'Gratis'}</span></div>
+      ${datos.entrega === 'domicilio' && falta > 0 ? `<small style="color:var(--musgo);font-weight:600">Te faltan ${usd(falta)} para el envío gratis</small>` : ''}
+      <div class="lin"><span>Total</span><span>${usd(sub + env)}</span></div>
+      <p class="err" id="err" role="alert"></p>
+      <button type="button" class="btn btn-tinta" id="enviar"><svg class="ico" style="width:18px;height:18px"><use href="#i-wa"/></svg> Enviar pedido por WhatsApp</button>`;
+    $('#enviar').onclick = enviar;
+  }
+  function enviar() {
+    leer();
+    const t = tel(datos.tel), err = $('#err');
+    if (datos.nombre.length < 2) { err.textContent = 'Escribe tu nombre.'; return; }
+    if (!/^5939\d{8}$/.test(t)) { err.textContent = 'Revisa tu WhatsApp: 10 dígitos, empieza con 09.'; return; }
+    if (datos.entrega === 'domicilio' && datos.sector.length < 3) { err.textContent = 'Escribe tu sector para el envío.'; return; }
+    const items = Object.entries(carro).filter(([id]) => porId[id]).map(([id, n]) => ({ id, cant: n, precio: porId[id].precio, costo: porId[id].costo }));
+    const sub = subtotal(), env = envio(sub, datos.entrega);
+    const ped = { id: 'D' + Date.now().toString(36).toUpperCase().slice(-5), fecha: Date.now(), cliente: { nombre: datos.nombre, tel: t, sector: datos.sector },
+      items, envio: env, entrega: datos.entrega, canal: canal(), estado: 'nuevo', nota: datos.nota };
+    const lista = LS.get('dogo_pedidos', []); lista.push(ped); LS.set('dogo_pedidos', lista);
+    track('whatsapp', { total: sub + env });
+    const txt = [`*Pedido ${ped.id}* · ${T.nombre}`, '',
+      ...items.map(i => `${i.cant} × ${porId[i.id].nombre} (${porId[i.id].pack}) · ${usd(i.precio * i.cant)}`), '',
+      `Subtotal: ${usd(sub)}`, `Envío: ${datos.entrega === 'retiro' ? 'Retiro' : env ? usd(env) : 'Gratis'}`, `*Total: ${usd(sub + env)}*`, '',
+      `Nombre: ${datos.nombre}`, datos.entrega === 'domicilio' ? `Entrega en: ${datos.sector}` : 'Retiro en el local', datos.nota ? `Nota: ${datos.nota}` : ''].join('\n');
+    window.open('https://wa.me/' + T.wa + '?text=' + encodeURIComponent(txt), '_blank', 'noopener');
+    carro = {}; LS.set('dogo_carro', carro); listo = true;
+    $('#cuerpo').innerHTML = `<div class="vacio"><svg class="ico" style="width:64px;height:64px;margin:0 auto 12px;color:var(--musgo);stroke-width:2"><path class="ok-ico" d="m5 12.5 4.5 4.5L19 7.5"/></svg><b style="font-size:22px;color:var(--tinta);font-family:var(--serif)">Pedido ${ped.id} enviado</b><br>Te respondemos por WhatsApp para confirmar la entrega.</div>`;
+    $('#tot').innerHTML = '';
+    pintar();
+  }
+  pintar();
+})();
+</script>
+</body>
+</html>
