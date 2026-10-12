@@ -266,7 +266,7 @@ label.campo{display:grid;gap:6px;font-size:13.5px;font-weight:700}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.ok-ico{stroke-dashoffset:0}}
 </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"LocalBusiness","name":"Dogo","description":"Snacks de un solo ingrediente para perros","image":"assets/og.jpg","address":{"@type":"PostalAddress","addressLocality":"Quito","addressCountry":"EC"},"priceRange":"$2,50 – $8,00"}
+{"@context":"https://schema.org","@type":"LocalBusiness","name":"Dogo","description":"Snacks de un solo ingrediente para perros","image":"assets/og.jpg","address":{"@type":"PostalAddress","addressLocality":"Quito","addressCountry":"EC"},"areaServed":["Quito","Ambato"],"priceRange":"$2,50 – $8,00"}
 </script>
 </head>
 <body>
@@ -286,7 +286,7 @@ label.campo{display:grid;gap:6px;font-size:13.5px;font-weight:700}
 
 <div class="top"><div class="wrap">
   <span><svg class="ico"><use href="#i-reloj"/></svg><span data-t="horario"></span></span>
-  <span class="oc"><svg class="ico"><use href="#i-pin"/></svg>Entregas en <span data-t="ciudad"></span> y los valles</span>
+  <span class="oc"><svg class="ico"><use href="#i-pin"/></svg>Entregas en <span data-t="ciudad"></span>, los valles y Ambato</span>
   <a class="wa-link" href="#"><svg class="ico"><use href="#i-wa"/></svg>Escríbenos</a>
 </div></div>
 
@@ -388,7 +388,7 @@ label.campo{display:grid;gap:6px;font-size:13.5px;font-weight:700}
     <details><summary>¿Llevan conservantes, sal o saborizantes?</summary><p>No. Cada bolsa trae un solo ingrediente, deshidratado a baja temperatura. Por eso se guardan en un lugar fresco y seco, y duran semanas, no años.</p></details>
     <details><summary>¿Cuántos le puedo dar al día?</summary><p>Como premio, que no pasen del 10 % de su comida diaria. Si tu perro tiene alguna condición de salud, consulta antes con tu veterinario.</p></details>
     <details><summary>¿Son seguros para cachorros?</summary><p>Desde los 4 meses, con supervisión. Para empezar recomendamos el pulmón, que es liviano y se parte fácil.</p></details>
-    <details><summary>¿A dónde hacen envíos y cuánto cuesta?</summary><p>Entregamos en <span data-t="ciudad"></span> y los valles. El envío cuesta <span id="envio-txt"></span> y es gratis desde <span class="gratis2"></span>.</p></details>
+    <details><summary>¿A dónde hacen envíos y cuánto cuesta?</summary><p>Entregamos en <span data-t="ciudad"></span>, los valles y Ambato. El envío cuesta <span id="envio-txt"></span> y es gratis desde <span class="gratis2"></span>.</p></details>
     <details><summary>¿Cómo pago?</summary><p>Por transferencia o en efectivo al recibir. Te pasamos los datos por WhatsApp al confirmar el pedido.</p></details>
   </div>
 </div></section>
@@ -400,7 +400,7 @@ label.campo{display:grid;gap:6px;font-size:13.5px;font-weight:700}
       <div class="redes"><a href="#" aria-label="Instagram de Dogo"><svg class="ico" style="width:18px;height:18px"><use href="#i-ig"/></svg></a><a href="#" aria-label="TikTok de Dogo"><svg class="ico" style="width:18px;height:18px"><use href="#i-tt"/></svg></a><a class="wa-link" href="#" aria-label="WhatsApp de Dogo"><svg class="ico" style="width:18px;height:18px"><use href="#i-wa"/></svg></a></div></div>
     <div><h3>Tienda</h3><ul><li><a href="#catalogo">Catálogo</a></li><li><a href="#para-quien">Combos por tamaño</a></li><li><a href="#proceso">Cómo lo hacemos</a></li></ul></div>
     <div><h3>Pedidos</h3><ul><li>Envío <span id="envio-txt2"></span></li><li>Gratis desde <span class="gratis2"></span></li><li>Transferencia o efectivo</li></ul></div>
-    <div><h3>Contacto</h3><ul><li><a class="wa-link" href="#">WhatsApp</a></li><li data-t="horario"></li><li><span data-t="ciudad"></span>, Ecuador</li></ul></div>
+    <div><h3>Contacto</h3><ul><li><a class="wa-link" href="#">WhatsApp</a></li><li data-t="horario"></li><li><span data-t="ciudad"></span> y Ambato, Ecuador</li></ul></div>
   </div>
   <div class="legal"><span>© 2026 Dogo. Snacks para perros hechos en <span data-t="ciudad"></span>.</span><span>No reemplaza la alimentación principal de tu perro.</span></div>
 </div></footer>
@@ -524,7 +524,7 @@ label.campo{display:grid;gap:6px;font-size:13.5px;font-weight:700}
         <label><input type="radio" name="entrega" value="domicilio" ${datos.entrega !== 'retiro' ? 'checked' : ''}> A domicilio</label>
         <label><input type="radio" name="entrega" value="retiro" ${datos.entrega === 'retiro' ? 'checked' : ''}> Retiro</label>
       </div>
-      <label class="campo" id="c-sector">Sector o barrio<input id="f-sector" value="${esc(datos.sector)}" placeholder="Ej.: Cumbayá"></label>
+      <label class="campo" id="c-sector">Sector o barrio<input id="f-sector" value="${esc(datos.sector)}" placeholder="Ej.: Cumbayá, o Ficoa en Ambato"></label>
       <label class="campo">Nota (opcional)<input id="f-nota" value="${esc(datos.nota)}" placeholder="Ej.: es para un perro de 30 kg"></label>`;
     $('#cuerpo').querySelectorAll('input').forEach(i => i.addEventListener('input', () => { leer(); if (i.name === 'entrega') pintarTot(); }));
     pintarTot();
