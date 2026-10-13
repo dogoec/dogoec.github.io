@@ -125,6 +125,12 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
 .seg-cli small{color:var(--ink-2)}
 @media (max-width:760px){.seg-cli{grid-template-columns:1fr 1fr}}
 .aviso{font-size:13px;background:#fff3c4;color:#5a4400;border-radius:12px;padding:10px 14px;margin-bottom:16px}
+.login{position:fixed;inset:0;z-index:50;background:var(--bg);display:grid;place-items:center;padding:16px}
+.login-caja{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;width:min(400px,100%);display:grid;gap:12px}
+.campo{display:grid;gap:6px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.campo .txt{font-size:16px}
+.err{color:var(--bad);font-size:14px;min-height:1em}
+.cargando{opacity:.55;pointer-events:none}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -151,7 +157,7 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
   <button class="tab" role="tab" data-tab="productos" aria-selected="false"><svg class="ico"><use href="#i-prod"/></svg>Precios y márgenes</button>
   <button class="tab" role="tab" data-tab="marketing" aria-selected="false"><svg class="ico"><use href="#i-mkt"/></svg>Marketing</button>
   <button class="tab" role="tab" data-tab="clientes" aria-selected="false"><svg class="ico"><use href="#i-cli"/></svg>Clientes</button>
-  <div class="pie">Demo: los datos viven en este navegador.<br><a href="index.html">Ver la tienda →</a></div>
+  <div class="pie" id="pie-menu">Demo: los datos viven en este navegador.<br><a href="index.html">Ver la tienda →</a></div>
 </aside>
 
 <main>
@@ -216,6 +222,12 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
       </div>
       <div class="card"><h2>Utilidad por línea <small>en el período</small></h2><div class="barras" id="g-utilidad"></div></div>
     </div>
+    <div class="card oculto" id="c-envio" style="margin-top:16px"><h2>Envío a domicilio <small>se aplica en la tienda al instante</small></h2>
+      <div class="sim" style="grid-template-columns:repeat(2,minmax(0,200px)) auto">
+        <label>Costo de envío ($)<input class="num txt" id="env-dom" type="number" step="0.25" min="0" style="width:100%"></label>
+        <label>Gratis desde ($)<input class="num txt" id="env-gratis" type="number" step="1" min="0" style="width:100%"></label>
+        <div><button class="btn btn-1" id="env-guardar" type="button">Guardar envío</button> <span class="nota" id="env-ok" aria-live="polite"></span></div>
+      </div></div>
   </section>
 
   <!-- MARKETING -->
@@ -255,11 +267,23 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
 
 <div class="tip" id="tip" role="status"></div>
 
+<div class="login oculto" id="login" role="dialog" aria-modal="true" aria-labelledby="login-tit">
+  <form id="f-login" class="login-caja">
+    <div class="marca" style="color:var(--ink);padding:0 0 18px"><i>d.</i><div><span data-t="nombre"></span><small style="color:var(--muted)">Panel del dueño</small></div></div>
+    <h1 id="login-tit" style="font-size:24px;margin-bottom:6px">Ingresa a tu panel</h1>
+    <p class="nota" style="margin-bottom:16px">Con el correo y la clave que te dio la agencia.</p>
+    <label class="campo">Correo<input class="txt" id="l-correo" type="email" autocomplete="username" required></label>
+    <label class="campo">Clave<input class="txt" id="l-clave" type="password" autocomplete="current-password" required></label>
+    <p class="err" id="l-err" role="alert"></p>
+    <button class="btn btn-1" type="submit" style="width:100%;justify-content:center;padding:13px">Entrar</button>
+  </form>
+</div>
+
 <script src="config.js"></script>
 <script src="comun.js"></script>
 <script>
-(() => {
-  const { T, LS, CANALES, productos, usd } = SP;
+(async () => {
+  const { T, LS, CANALES, api, productos, usd } = SP;
   const $ = s => document.querySelector(s);
   const DIA = 864e5;
   const hoy0 = (() => { const d = new Date(); d.setHours(0, 0, 0, 0); return d.getTime(); })();
@@ -269,7 +293,46 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
   const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   document.querySelectorAll('[data-t]').forEach(e => e.textContent = T[e.dataset.t]);
 
+  /* ---------- conexión: con Supabase pide sesión del dueño y carga los datos de la base ---------- */
   let P = productos(), porId = Object.fromEntries(P.map(p => [p.id, p]));
+  const R = { pedidos: [], eventos: [], inversion: {} };   // datos de la base (modo Supabase)
+  const conProductos = lista => {   // precios y costos de la base + fotos, referencias y textos de config.js
+    const base = Object.fromEntries(T.productos.map(p => [p.id, p]));
+    P = lista.map(p => Object.assign({ bench: '—', conf: '', confNota: '' }, base[p.id] || {}, p, { precio: +p.precio, costo: +p.costo }));
+    porId = Object.fromEntries(P.map(p => [p.id, p]));
+  };
+  async function cargar() {
+    const d = new Date(hoy0 - 200 * DIA), desde = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    const r = await api.rpc('panel', { p_desde: desde });
+    R.pedidos = r.pedidos.map(p => Object.assign({}, p, { fecha: Date.parse(p.fecha), envio: +p.envio,
+      items: (p.items || []).map(i => ({ id: i.id, cant: i.cant, precio: +i.precio, costo: +i.costo })) }));
+    R.eventos = r.eventos.map(e => Object.assign({}, e, { t: new Date(e.dia + 'T00:00:00').getTime() }));
+    R.inversion = Object.fromEntries(Object.entries(r.inversion || {}).map(([k, v]) => [k, +v]));
+    conProductos(r.productos);
+    try { const c = await api.rpc('catalogo'); T.envio = { domicilio: +c.envio.domicilio, gratisDesde: +c.envio.gratisDesde }; } catch (e) {}
+  }
+  async function entrar() {
+    let yo = api.sesion() ? await api.rpc('yo').catch(() => null) : null;
+    if (!yo) {
+      api.salir(); $('#login').classList.remove('oculto'); $('#l-correo').focus();
+      await new Promise(ok => { $('#f-login').onsubmit = async e => {
+        e.preventDefault(); const f = e.currentTarget; f.classList.add('cargando'); $('#l-err').textContent = '';
+        try {
+          await api.login($('#l-correo').value.trim(), $('#l-clave').value);
+          const y = await api.rpc('yo');
+          if (!y) { api.salir(); throw new Error('Este usuario no tiene acceso al panel.'); }
+          $('#login').classList.add('oculto'); yo = y; ok();
+        } catch (err) { $('#l-err').textContent = err.message; } finally { f.classList.remove('cargando'); }
+      }; });
+    }
+    await cargar();
+    const n = (yo && yo.nombre) || '';
+    $('#pie-menu').innerHTML = `Conectado${n ? ' como ' + esc(n) : ''}.<br><a href="index.html">Ver la tienda →</a> · <a href="#" id="salir">Salir</a>`;
+    $('#salir').onclick = e => { e.preventDefault(); api.salir(); location.reload(); };
+    $('#c-envio').classList.remove('oculto'); $('#restaurar').classList.add('oculto');
+    $('#env-dom').value = T.envio.domicilio; $('#env-gratis').value = T.envio.gratisDesde;
+  }
+  if (api.activo) await entrar();
   const COLOR = Object.fromEntries(P.map((p, i) => [p.id, `var(--s${Math.min(i + 1, 5)})`]));
 
   /* ---------- datos de ejemplo (deterministas, 90 días hacia atrás) ---------- */
@@ -320,12 +383,12 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
   const EJ = semilla();
 
   /* ---------- estado ---------- */
-  let dias = 30, conEjemplo = LS.get('dogo_ver_ejemplo', true), tab = 'resumen';
+  let dias = 30, conEjemplo = api.activo ? LS.get('dogo_ver_ejemplo_real', false) : LS.get('dogo_ver_ejemplo', true), tab = 'resumen';
   $('#ejemplo').checked = conEjemplo;
   const estados = () => LS.get('dogo_estados', {});
   function todos() {
     const ov = estados();
-    const reales = LS.get('dogo_pedidos', []).map(p => Object.assign({}, p, { estado: ov[p.id] || p.estado }));
+    const reales = api.activo ? R.pedidos : LS.get('dogo_pedidos', []).map(p => Object.assign({}, p, { estado: ov[p.id] || p.estado }));
     const ej = conEjemplo ? EJ.pedidos.map(p => ov[p.id] ? Object.assign({}, p, { estado: ov[p.id] }) : p) : [];
     return ej.concat(reales).sort((a, b) => b.fecha - a.fecha);
   }
@@ -339,7 +402,11 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
   function embudo(desde, hasta) {
     const out = {}; const sumar = (c, k, n) => { out[c] = out[c] || { visita: 0, catalogo: 0, carrito: 0, whatsapp: 0 }; out[c][k] += n; };
     if (conEjemplo) for (const [d, por] of Object.entries(EJ.eventos)) { if (+d >= desde && +d < hasta) for (const [c, e] of Object.entries(por)) for (const k in e) sumar(c, k, e[k]); }
-    // los reales: un "carrito" cuenta una vez por sesión de visita para no inflar
+    if (api.activo) {   // la base ya cuenta sesiones distintas por día, canal y paso
+      for (const e of R.eventos) if (e.t >= desde && e.t < hasta && ['visita', 'catalogo', 'carrito', 'whatsapp'].includes(e.ev)) sumar(e.canal, e.ev, e.n);
+      return out;
+    }
+    // demo: un "carrito" cuenta una vez por sesión de visita para no inflar
     const vistos = new Set();
     for (const e of LS.get('dogo_eventos', [])) {
       if (e.t < desde || e.t >= hasta) continue;
@@ -463,7 +530,7 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
     const est = ['nuevo', 'confirmado', 'entregado', 'anulado'];
     $('#t-pedidos').innerHTML = L.slice(0, 200).map(p => {
       const msg = encodeURIComponent(`Hola ${p.cliente.nombre.split(' ')[0]}, te escribimos de ${T.nombre} por tu pedido ${p.id}. ¡Ya lo tenemos listo! 🐾`);
-      return `<tr><td><b>${p.id}</b>${p.ejemplo ? '' : ' <span class="pill neu">real</span>'}</td><td>${fechaH(p.fecha)}</td><td>${esc(p.cliente.nombre)}<br><small style="color:var(--muted)">${esc(p.entrega === 'retiro' ? 'Retiro' : p.cliente.sector)}</small></td>
+      return `<tr><td><b>${p.id}</b>${p.ejemplo ? ' <span class="pill neu">ejemplo</span>' : ''}</td><td>${fechaH(p.fecha)}</td><td>${esc(p.cliente.nombre)}<br><small style="color:var(--muted)">${esc(p.entrega === 'retiro' ? 'Retiro' : p.cliente.sector)}</small></td>
         <td>${p.items.map(i => `${i.cant} × ${porId[i.id] ? porId[i.id].nombre : i.id}`).join('<br>')}</td><td>${CANALES[p.canal] || p.canal}</td>
         <td class="n"><b>${usd(sub(p) + (p.envio || 0))}</b></td>
         <td><select class="estado" data-ped="${p.id}" aria-label="Estado de ${p.id}">${est.map(e => `<option value="${e}" ${e === p.estado ? 'selected' : ''}>${e[0].toUpperCase() + e.slice(1)}</option>`).join('')}</select></td>
@@ -472,6 +539,15 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
   }
   document.addEventListener('change', e => {
     const s = e.target.closest('[data-ped]'); if (!s) return;
+    const real = api.activo && R.pedidos.find(p => p.id === s.dataset.ped);
+    if (real) {
+      const antes = real.estado; s.disabled = true;
+      api.rpc('pedido_estado', { p_codigo: real.id, p_estado: s.value })
+        .then(() => { real.estado = s.value; badge(); })
+        .catch(err => { s.value = antes; alert('No se pudo cambiar el estado: ' + err.message); })
+        .finally(() => { s.disabled = false; });
+      return;
+    }
     const ov = estados(); ov[s.dataset.ped] = s.value; LS.set('dogo_estados', ov); badge();
   });
   $('#buscar').addEventListener('input', pedidos); $('#f-estado').addEventListener('change', pedidos);
@@ -501,6 +577,15 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
   $('#t-precios').addEventListener('change', e => {
     const i = e.target.closest('[data-campo]'); if (!i) return;
     const id = i.closest('tr').dataset.id, v = Math.max(0, parseFloat(i.value) || 0), o = LS.get('dogo_precios', {});
+    if (api.activo) {
+      const p = porId[id], nuevo = Object.assign({}, p, { [i.dataset.campo]: Math.round(v * 100) / 100 });
+      $('#guardado').textContent = 'Guardando…';
+      api.rpc('producto_guardar', { p_id: id, p_precio: nuevo.precio, p_costo: nuevo.costo, p_activo: p.activo !== false })
+        .then(r => { conProductos(P.map(x => x.id === id ? Object.assign({}, x, { precio: +r.precio, costo: +r.costo }) : x)); precios();
+                     $('#guardado').textContent = 'Guardado. La tienda ya muestra el nuevo precio.'; })
+        .catch(err => { precios(); $('#guardado').textContent = 'No se guardó: ' + err.message; });
+      return;
+    }
     o[id] = Object.assign({}, o[id], { [i.dataset.campo]: Math.round(v * 100) / 100 }); LS.set('dogo_precios', o);
     P = productos(); porId = Object.fromEntries(P.map(p => [p.id, p])); precios();
     $('#guardado').textContent = 'Guardado. La tienda ya muestra el nuevo valor.';
@@ -522,7 +607,7 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
     const act = L.filter(p => enRango(p, d0, d1)).filter(valido), ant = L.filter(p => enRango(p, a0, a1)).filter(valido);
     const ev = embudo(d0, d1), evA = embudo(a0, a1);
     const tot = k => Object.values(ev).reduce((s, e) => s + e[k], 0), totA = k => Object.values(evA).reduce((s, e) => s + e[k], 0);
-    const inv = Object.assign({}, INV0, LS.get('dogo_inversion', {})), factor = dias / 30;
+    const inv = api.activo ? Object.assign({}, R.inversion) : Object.assign({}, INV0, LS.get('dogo_inversion', {})), factor = dias / 30;
     const invTot = Object.values(inv).reduce((a, b) => a + b, 0) * factor, ventas = act.reduce((s, p) => s + sub(p), 0);
     const primera = primerasCompras(L), nuevosAct = act.filter(p => primera[p.cliente.tel] === p.id);
     $('#kpis-mkt').innerHTML =
@@ -551,7 +636,7 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
     }).join('');
     const lc = $('#l-canal'); if (!lc.options.length) { lc.innerHTML = Object.entries(CANALES).filter(([k]) => k !== 'directo').map(([k, v]) => `<option value="${k}">${v}</option>`).join(''); enlace(); }
   }
-  $('#t-canales').addEventListener('change', e => { const i = e.target.closest('[data-inv]'); if (!i) return; const o = LS.get('dogo_inversion', {}); o[i.dataset.inv] = Math.max(0, parseFloat(i.value) || 0); LS.set('dogo_inversion', o); marketing(); });
+  $('#t-canales').addEventListener('change', e => { const i = e.target.closest('[data-inv]'); if (!i) return; if (api.activo) { const m = Math.max(0, parseFloat(i.value) || 0); api.rpc('inversion_guardar', { p_canal: i.dataset.inv, p_monto: m }).then(() => { R.inversion[i.dataset.inv] = m; marketing(); }).catch(err => alert('No se guardó: ' + err.message)); return; } const o = LS.get('dogo_inversion', {}); o[i.dataset.inv] = Math.max(0, parseFloat(i.value) || 0); LS.set('dogo_inversion', o); marketing(); });
   function enlace() {
     const u = new URL('index.html', location.href); u.search = ''; u.searchParams.set('utm_source', $('#l-canal').value);
     const c = $('#l-camp').value.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); if (c) u.searchParams.set('utm_campaign', c);
@@ -606,6 +691,7 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
     $('#titulo').firstChild.textContent = TIT[tab];
     $('#rango').textContent = `${fecha(d0)} – ${fecha(d1 - 1)} · comparado con los ${dias} días anteriores`;
     $('#aviso').style.display = conEjemplo ? '' : 'none';
+    if (api.activo) $('#aviso').textContent = 'Estás viendo datos de ejemplo junto a tus pedidos reales. Desmarca “Datos de ejemplo” para ver solo los tuyos.';
     document.querySelectorAll('[data-panel]').forEach(s => s.classList.toggle('oculto', s.dataset.panel !== tab));
     document.querySelectorAll('[data-tab]').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tab));
     ({ resumen, pedidos, productos: precios, marketing, clientes: vistaClientes })[tab]();
@@ -616,8 +702,18 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
     e.preventDefault(); tab = t.dataset.tab || t.dataset.ir; pintar(); scrollTo(0, 0);
   });
   $('#periodo').addEventListener('click', e => { const b = e.target.closest('[data-d]'); if (!b) return; dias = +b.dataset.d; $('#periodo').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); pintar(); });
-  $('#ejemplo').addEventListener('change', e => { conEjemplo = e.target.checked; LS.set('dogo_ver_ejemplo', conEjemplo); pintar(); });
-  addEventListener('storage', pintar); // un pedido nuevo en otra pestaña aparece solo
+  $('#ejemplo').addEventListener('change', e => { conEjemplo = e.target.checked; LS.set(api.activo ? 'dogo_ver_ejemplo_real' : 'dogo_ver_ejemplo', conEjemplo); pintar(); });
+  $('#env-guardar').addEventListener('click', () => {
+    const d = parseFloat($('#env-dom').value), g = parseFloat($('#env-gratis').value);
+    api.rpc('envio_guardar', { p_domicilio: d, p_gratis_desde: g })
+      .then(() => { T.envio = { domicilio: d, gratisDesde: g }; $('#env-ok').textContent = 'Guardado.'; })
+      .catch(err => { $('#env-ok').textContent = 'No se guardó: ' + err.message; });
+  });
+  if (api.activo) {   // pedidos nuevos: se vuelve a leer la base cada minuto y al volver a la pestaña
+    const refrescar = () => cargar().then(pintar).catch(() => {});
+    setInterval(() => { if (!document.hidden) refrescar(); }, 60000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) refrescar(); });
+  } else addEventListener('storage', pintar); // demo: un pedido nuevo en otra pestaña aparece solo
   pintar();
 })();
 </script>

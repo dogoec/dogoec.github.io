@@ -6,7 +6,9 @@ window.TIENDA = {
   ciudad: 'Quito',                   // [CONFIRMAR]
   wa: '593998000495',                // WhatsApp de Dogo: aquí llegan todos los pedidos
   horario: 'Lun a sáb · 9:00 a 19:00', // [CONFIRMAR]
-  envio: { domicilio: 2.00, gratisDesde: 20 }, // [CONFIRMAR] costo de envío y monto de envío gratis
+  envio: { domicilio: 2.00, gratisDesde: 20 }, // sin Supabase; con Supabase el envío se edita en el panel
+  // Base de datos. Vacío = modo demo (pedidos solo en este navegador). Solo va la clave anon, NUNCA service_role (§4.11).
+  supabase: { url: '', anonKey: '', schema: 'dogo' },
   // Precio y costo por pack (tabla de precios del dueño). El panel puede editarlos.
   productos: [
     { id: 'patitas', foto: 'assets/prod-patitas.jpg', ingrediente: '100 % pata de pollo', textura: 'Crocante', mastica: 1,

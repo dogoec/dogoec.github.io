@@ -421,9 +421,9 @@ label.campo{display:grid;gap:6px;font-size:13.5px;font-weight:700}
 <script src="config.js"></script>
 <script src="comun.js"></script>
 <script>
-(() => {
-  const { T, LS, productos, track, usd, tel, canal } = SP;
-  const P = productos();
+(async () => {
+  const { T, LS, api, track, usd, tel, canal, campana } = SP;
+  const P = await SP.cargarCatalogo();   // con Supabase: precios y envío vienen de la base
   const porId = Object.fromEntries(P.map(p => [p.id, p]));
   let carro = LS.get('dogo_carro', {});
   const $ = s => document.querySelector(s);
@@ -548,27 +548,63 @@ label.campo{display:grid;gap:6px;font-size:13.5px;font-weight:700}
       <button type="button" class="btn btn-tinta" id="enviar"><svg class="ico" style="width:18px;height:18px"><use href="#i-wa"/></svg> Enviar pedido por WhatsApp</button>`;
     $('#enviar').onclick = enviar;
   }
-  function enviar() {
+  let enviando = false;
+  async function enviar() {
+    if (enviando) return;
     leer();
-    const t = tel(datos.tel), err = $('#err');
+    const t = tel(datos.tel), err = $('#err'), btn = $('#enviar');
     if (datos.nombre.length < 2) { err.textContent = 'Escribe tu nombre.'; return; }
     if (!/^5939\d{8}$/.test(t)) { err.textContent = 'Revisa tu WhatsApp: 10 dígitos, empieza con 09.'; return; }
     if (datos.entrega === 'domicilio' && datos.sector.length < 3) { err.textContent = 'Escribe tu sector para el envío.'; return; }
-    const items = Object.entries(carro).filter(([id]) => porId[id]).map(([id, n]) => ({ id, cant: n, precio: porId[id].precio, costo: porId[id].costo }));
-    const sub = subtotal(), env = envio(sub, datos.entrega);
-    const ped = { id: 'D' + Date.now().toString(36).toUpperCase().slice(-5), fecha: Date.now(), cliente: { nombre: datos.nombre, tel: t, sector: datos.sector },
-      items, envio: env, entrega: datos.entrega, canal: canal(), estado: 'nuevo', nota: datos.nota };
-    const lista = LS.get('dogo_pedidos', []); lista.push(ped); LS.set('dogo_pedidos', lista);
-    track('whatsapp', { total: sub + env });
-    const txt = [`*Pedido ${ped.id}* · ${T.nombre}`, '',
-      ...items.map(i => `${i.cant} × ${porId[i.id].nombre} (${porId[i.id].pack}) · ${usd(i.precio * i.cant)}`), '',
-      `Subtotal: ${usd(sub)}`, `Envío: ${datos.entrega === 'retiro' ? 'Retiro' : env ? usd(env) : 'Gratis'}`, `*Total: ${usd(sub + env)}*`, '',
-      `Nombre: ${datos.nombre}`, datos.entrega === 'domicilio' ? `Entrega en: ${datos.sector}` : 'Retiro en el local', datos.nota ? `Nota: ${datos.nota}` : ''].join('\n');
-    window.open('https://wa.me/' + T.wa + '?text=' + encodeURIComponent(txt), '_blank', 'noopener');
+    const items = Object.entries(carro).filter(([id]) => porId[id]).map(([id, n]) => ({ id, cant: n }));
+    let res = null, aviso = '';
+    if (api.activo) {
+      // La ventana se abre antes de esperar a la base para que el navegador no la bloquee.
+      const w = window.open('', '_blank');
+      enviando = true; btn.disabled = true; btn.lastChild.textContent = ' Enviando…'; err.textContent = '';
+      try {
+        res = await api.rpc('crear_pedido', { p_nombre: datos.nombre, p_tel: t, p_entrega: datos.entrega, p_sector: datos.sector,
+          p_nota: datos.nota, p_items: items, p_canal: canal(), p_campana: campana() }, { anon: true });
+      } catch (e) {
+        if (e.servidor) { if (w) w.close(); enviando = false; btn.disabled = false; btn.lastChild.textContent = ' Enviar pedido por WhatsApp'; err.textContent = e.message; return; }
+        aviso = 'sin-conexion';   // sin conexión con la base: el pedido igual llega por WhatsApp
+      }
+      enviando = false;
+      abrirWa(w, mensaje(res));
+    } else {
+      abrirWa(null, mensaje(null));
+    }
+    track('whatsapp');
     carro = {}; LS.set('dogo_carro', carro); listo = true;
-    $('#cuerpo').innerHTML = `<div class="vacio"><svg class="ico" style="width:64px;height:64px;margin:0 auto 12px;color:var(--musgo);stroke-width:2"><path class="ok-ico" d="m5 12.5 4.5 4.5L19 7.5"/></svg><b style="font-size:22px;color:var(--tinta);font-family:var(--serif)">Pedido ${ped.id} enviado</b><br>Te respondemos por WhatsApp para confirmar la entrega.</div>`;
+    const cod = res ? res.codigo : ultimo;
+    $('#cuerpo').innerHTML = `<div class="vacio"><svg class="ico" style="width:64px;height:64px;margin:0 auto 12px;color:var(--musgo);stroke-width:2"><path class="ok-ico" d="m5 12.5 4.5 4.5L19 7.5"/></svg><b style="font-size:22px;color:var(--tinta);font-family:var(--serif)">Pedido ${cod} listo</b><br>Envía el mensaje en WhatsApp y te respondemos para confirmar la entrega.${aviso ? '<br><small>No pudimos registrarlo en línea, pero el mensaje de WhatsApp lleva todo tu pedido.</small>' : ''}<br><br><a class="btn btn-tinta" href="${ultimoWa}" target="_blank" rel="noopener">Abrir WhatsApp de nuevo</a></div>`;
     $('#tot').innerHTML = '';
     pintar();
+  }
+  let ultimo = '', ultimoWa = '';
+  // Arma el mensaje con los montos que devolvió la base (o los locales en modo demo / sin conexión).
+  function mensaje(res) {
+    const lineas = res ? res.items.map(i => ({ nombre: i.nombre, pack: i.pack, cant: i.cant, precio: +i.precio }))
+                       : Object.entries(carro).filter(([id]) => porId[id]).map(([id, n]) => ({ nombre: porId[id].nombre, pack: porId[id].pack, cant: n, precio: porId[id].precio }));
+    const sub = res ? +res.subtotal : subtotal(), env = res ? +res.envio : envio(sub, datos.entrega);
+    ultimo = res ? res.codigo : 'D' + Date.now().toString(36).toUpperCase().slice(-5);
+    if (!res && !api.activo) {   // demo: el panel lee los pedidos de este navegador
+      const lista = LS.get('dogo_pedidos', []);
+      lista.push({ id: ultimo, fecha: Date.now(), cliente: { nombre: datos.nombre, tel: tel(datos.tel), sector: datos.sector }, entrega: datos.entrega,
+        items: Object.entries(carro).filter(([id]) => porId[id]).map(([id, n]) => ({ id, cant: n, precio: porId[id].precio, costo: porId[id].costo })),
+        envio: env, canal: canal(), estado: 'nuevo', nota: datos.nota });
+      LS.set('dogo_pedidos', lista);
+    }
+    return [`*Pedido ${ultimo}* · ${T.nombre}`, '',
+      ...lineas.map(i => `${i.cant} × ${i.nombre} (${i.pack}) · ${usd(i.precio * i.cant)}`), '',
+      `Subtotal: ${usd(sub)}`, `Envío: ${datos.entrega === 'retiro' ? 'Retiro' : env ? usd(env) : 'Gratis'}`, `*Total: ${usd(sub + env)}*`, '',
+      `Nombre: ${datos.nombre}`, datos.entrega === 'domicilio' ? `Entrega en: ${datos.sector}` : 'Retiro en el local', datos.nota ? `Nota: ${datos.nota}` : ''].join('\n');
+  }
+  function abrirWa(w, txt) {
+    ultimoWa = 'https://wa.me/' + T.wa + '?text=' + encodeURIComponent(txt);
+    if (w) { w.location.href = ultimoWa; return; }
+    const n = window.open(ultimoWa, '_blank');   // sin 'noopener': con él, window.open devuelve null y no se sabe si se abrió
+    if (n) n.opener = null; else location.href = ultimoWa;
   }
   pintar();
 })();
