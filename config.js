@@ -8,7 +8,7 @@ window.TIENDA = {
   horario: 'Lun a sáb · 9:00 a 19:00', // [CONFIRMAR]
   envio: { domicilio: 2.00, gratisDesde: 20 }, // sin Supabase; con Supabase el envío se edita en el panel
   // Base de datos. Vacío = modo demo (pedidos solo en este navegador). Solo va la clave anon, NUNCA service_role (§4.11).
-  supabase: { url: '', anonKey: '', schema: 'dogo' },
+  supabase: { url: 'https://jukpaqtriemqvxormrgb.supabase.co', anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1a3BhcXRyaWVtcXZ4b3JtcmdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzODY1ODQsImV4cCI6MjEwNTk2MjU4NH0.4PPIVK2HvvgwrGEtNVn7CozqDCldvlFWnK2rpgrOmHE', schema: 'dogo' },
   // Precio y costo por pack (tabla de precios del dueño). El panel puede editarlos.
   productos: [
     { id: 'patitas', foto: 'assets/prod-patitas.jpg', ingrediente: '100 % pata de pollo', textura: 'Crocante', mastica: 1,
