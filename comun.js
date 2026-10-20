@@ -21,6 +21,15 @@
       if (!r.ok) throw new Error('Correo o clave incorrectos.');
       guardar(await r.json());
     },
+    // Cuenta nueva para una persona invitada al equipo (el acceso lo da el código de invitación, no la cuenta).
+    async crearCuenta(correo, clave) {
+      const r = await fetch(`${S.url}/auth/v1/signup`, {
+        method: 'POST', headers: { apikey: S.anonKey, 'Content-Type': 'application/json' }, body: JSON.stringify({ email: correo, password: clave }) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(/registered|exists/i.test(j.msg || j.message || j.error_description || '') ? 'Ese correo ya tiene cuenta: escribe su clave actual.' : (j.msg || 'No se pudo crear la cuenta.'));
+      if (!j.access_token) throw new Error('Revisa tu correo para confirmar la cuenta y vuelve a entrar.');
+      guardar(j);
+    },
     async rpc(fn, args, opt) {
       const ir = async () => {
         const s = api.sesion();

@@ -125,6 +125,32 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
 .seg-cli small{color:var(--ink-2)}
 @media (max-width:760px){.seg-cli{grid-template-columns:1fr 1fr}}
 .aviso{font-size:13px;background:#fff3c4;color:#5a4400;border-radius:12px;padding:10px 14px;margin-bottom:16px}
+[hidden]{display:none!important}
+.link{border:0;background:none;color:var(--ink-2);text-decoration:underline;font-size:13px;justify-self:center}
+.t-compras td{vertical-align:middle}
+.t-compras tbody tr{cursor:pointer}
+.t-compras tr.sel td{background:var(--bg)}
+@media (max-width:760px){
+  .t-compras thead{display:none}
+  .t-compras,.t-compras tbody,.t-compras tfoot{display:block}
+  .t-compras tr{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 12px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .t-compras td{border:0;padding:0;text-align:left!important}
+  .t-compras td:nth-child(1),.t-compras td:nth-child(2){grid-column:1/-1}
+  .t-compras td:nth-child(5){grid-column:span 2}
+  .t-compras td[data-l]::before{content:attr(data-l);display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
+  .t-compras tr.sel td{background:none}
+  .t-compras tfoot tr{display:flex;justify-content:space-between}
+  .t-compras tfoot td:first-child{flex:1}
+}
+.t-compras input.num{width:70px}
+.t-compras tfoot td{font-weight:700;border-top:1px solid var(--line)}
+.spark{display:block}
+.ley-pron{width:10px!important;height:10px!important;border-radius:2px;background:repeating-linear-gradient(135deg,var(--seq-3) 0 2px,transparent 2px 4px)!important;box-shadow:inset 0 0 0 1px var(--seq-3)}
+.como{padding-left:18px;display:grid;gap:8px;font-size:14px;color:var(--ink-2);margin:10px 0}
+.form-col{display:grid;gap:10px;margin-top:10px}
+.invit-ok{margin-top:14px;background:var(--good-bg);border-radius:12px;padding:14px;font-size:14px;display:grid;gap:8px}
+.invit-ok code{font-size:20px;font-weight:800;letter-spacing:.15em}
+.roles{margin-top:18px;font-size:13px;color:var(--ink-2);display:grid;gap:6px;border-top:1px solid var(--line);padding-top:14px}
 .login{position:fixed;inset:0;z-index:50;background:var(--bg);display:grid;place-items:center;padding:16px}
 .login-caja{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;width:min(400px,100%);display:grid;gap:12px}
 .campo{display:grid;gap:6px;font-size:13px;font-weight:600;color:var(--ink-2)}
@@ -147,6 +173,8 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
   <symbol id="i-x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m9 9 6 6M15 9l-6 6"/></symbol>
   <symbol id="i-idea" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3Z"/></symbol>
   <symbol id="i-wa" viewBox="0 0 24 24"><path d="M4 20l1.3-4A8 8 0 1 1 8 18.7Z"/></symbol>
+  <symbol id="i-caja" viewBox="0 0 24 24"><path d="M3.5 8.5 12 4l8.5 4.5v7L12 20l-8.5-4.5Z"/><path d="M3.5 8.5 12 13l8.5-4.5M12 13v7M7.8 6.2l8.4 4.6"/></symbol>
+  <symbol id="i-equipo" viewBox="0 0 24 24"><circle cx="8" cy="9" r="3"/><circle cx="16.5" cy="9.5" r="2.5"/><path d="M2.5 19a5.5 5.5 0 0 1 11 0M14 14.2a4.5 4.5 0 0 1 7.5 3.8"/></symbol>
 </svg>
 
 <div class="app">
@@ -154,9 +182,11 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
   <div class="marca"><i>d.</i><div><span data-t="nombre"></span><small>Panel del dueño</small></div></div>
   <button class="tab" role="tab" data-tab="resumen" aria-selected="true"><svg class="ico"><use href="#i-res"/></svg>Resumen</button>
   <button class="tab" role="tab" data-tab="pedidos" aria-selected="false"><svg class="ico"><use href="#i-ped"/></svg>Pedidos <span class="badge" id="b-nuevos"></span></button>
-  <button class="tab" role="tab" data-tab="productos" aria-selected="false"><svg class="ico"><use href="#i-prod"/></svg>Precios y márgenes</button>
+  <button class="tab" role="tab" data-tab="compras" aria-selected="false"><svg class="ico"><use href="#i-caja"/></svg>Compras <span class="badge" id="b-compras"></span></button>
+  <button class="tab" role="tab" data-tab="productos" aria-selected="false" data-solo-admin><svg class="ico"><use href="#i-prod"/></svg>Precios y márgenes</button>
   <button class="tab" role="tab" data-tab="marketing" aria-selected="false"><svg class="ico"><use href="#i-mkt"/></svg>Marketing</button>
   <button class="tab" role="tab" data-tab="clientes" aria-selected="false"><svg class="ico"><use href="#i-cli"/></svg>Clientes</button>
+  <button class="tab" role="tab" data-tab="equipo" aria-selected="false" data-solo-admin><svg class="ico"><use href="#i-equipo"/></svg>Equipo</button>
   <div class="pie" id="pie-menu">Demo: los datos viven en este navegador.<br><a href="index.html">Ver la tienda →</a></div>
 </aside>
 
@@ -177,7 +207,7 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
     <div class="kpis" id="kpis"></div>
     <div class="fila f-2">
       <div class="card"><h2>Ventas y utilidad por día <small>USD, sin envío</small></h2>
-        <div class="leyenda"><span><i style="background:var(--s1)"></i>Ventas</span><span><i style="background:var(--s2)"></i>Utilidad bruta</span></div>
+        <div class="leyenda"><span><i style="background:var(--s1)"></i>Ventas</span><span class="leyenda-util"><i style="background:var(--s2)"></i>Utilidad bruta</span></div>
         <div class="graf" id="g-tendencia"></div>
         <details class="tabla"><summary>Ver como tabla</summary><div class="tw" id="t-tendencia"></div></details>
       </div>
@@ -262,6 +292,68 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
       <div class="tw"><table><thead><tr><th>Cliente</th><th>Sector</th><th class="n">Pedidos</th><th class="n">Gastado</th><th>Último pedido</th><th>Favorito</th><th></th></tr></thead><tbody id="t-clientes"></tbody></table></div>
     </div>
   </section>
+  <!-- COMPRAS -->
+  <section data-panel="compras" class="oculto">
+    <div class="kpis" id="kpis-compras"></div>
+    <div class="card" style="margin-bottom:16px">
+      <h2>Lista de compra <small id="compra-semana"></small></h2>
+      <p class="nota">Cantidades sugeridas en packs para cubrir el tiempo de entrega del proveedor más los días de cobertura, con un margen de seguridad. Puedes ajustar cualquier cantidad antes de enviarla.</p>
+      <div class="barra-acc">
+        <button class="btn btn-1" id="c-wa" type="button"><svg class="ico" style="width:16px;height:16px"><use href="#i-wa"/></svg>Enviar pedido al proveedor</button>
+        <button class="btn btn-2" id="c-recibida" type="button">Registrar compra recibida</button>
+        <button class="btn btn-2" id="c-contar" type="button">Contar stock</button>
+        <button class="btn btn-2" id="c-csv" type="button">Descargar CSV</button>
+        <span class="nota" id="c-msg" aria-live="polite"></span>
+      </div>
+      <div class="tw"><table class="t-compras"><thead><tr><th>Producto</th><th>Últimas 8 semanas y pronóstico</th><th class="n">Próxima semana</th><th class="n">Stock</th><th>Cobertura</th><th class="n">Seguridad</th><th class="n">Comprar</th><th class="n solo-admin">Costo est.</th></tr></thead><tbody id="t-compras"></tbody><tfoot id="f-compras"></tfoot></table></div>
+    </div>
+    <div class="fila f-2">
+      <div class="card"><h2>Demanda semanal <small>packs vendidos y pronóstico</small></h2>
+        <div class="barra-acc" style="margin-top:8px"><select class="txt" id="c-prod" aria-label="Producto"></select></div>
+        <div class="leyenda"><span><i style="background:var(--seq-3);height:10px;width:10px;border-radius:2px"></i>Vendido</span><span><i class="ley-pron"></i>Pronóstico con rango probable</span></div>
+        <div class="graf" id="g-demanda"></div>
+        <details class="tabla"><summary>Ver como tabla</summary><div class="tw" id="t-demanda"></div></details>
+      </div>
+      <div class="card"><h2>Cómo se calcula</h2>
+        <ol class="como">
+          <li><b>Pronóstico:</b> promedio de las últimas 4 semanas completas, dando más peso a la más reciente (40 %, 30 %, 20 %, 10 %), corregido por la tendencia de las últimas 8 semanas (máximo ±15 %).</li>
+          <li><b>Rango probable:</b> la próxima semana debería venderse entre el mínimo y el máximo 8 de cada 10 veces, según cuánto varían tus ventas.</li>
+          <li><b>Stock de seguridad:</b> colchón para que no te falte en una semana fuerte (95 % de confianza), según la variación de ventas y los días de entrega.</li>
+          <li><b>Comprar</b> = venta diaria × (días de entrega + días de cobertura) + seguridad − stock actual, redondeado al múltiplo del proveedor.</li>
+          <li><b>Precisión:</b> se prueba el método con las 4 semanas anteriores y se mide cuánto se equivocó.</li>
+        </ol>
+        <p class="nota">El stock baja solo con cada pedido no anulado y sube al registrar una compra. Cuenta el stock real de vez en cuando para corregir mermas.</p>
+      </div>
+    </div>
+    <div class="card solo-admin" id="c-config"><h2>Datos de compra por producto <small>solo el dueño</small></h2>
+      <div class="tw"><table><thead><tr><th>Producto</th><th>Proveedor</th><th class="n">Días de entrega</th><th class="n">Cobertura (días)</th><th class="n">Se compra de a</th><th></th></tr></thead><tbody id="t-cfg"></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- EQUIPO -->
+  <section data-panel="equipo" class="oculto">
+    <div class="fila f-2">
+      <div class="card"><h2>Tu equipo <small id="eq-cuenta"></small></h2>
+        <div class="tw"><table><thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th></th></tr></thead><tbody id="t-equipo"></tbody></table></div>
+        <h2 style="margin-top:22px">Invitaciones pendientes</h2>
+        <div class="tw"><table><thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Código</th><th>Vence</th><th></th></tr></thead><tbody id="t-invit"></tbody></table></div>
+      </div>
+      <div class="card"><h2>Invitar a alguien</h2>
+        <form id="f-invitar" class="form-col">
+          <label class="campo">Nombre<input class="txt" id="i-nombre" required maxlength="60"></label>
+          <label class="campo">Correo<input class="txt" id="i-correo" type="email" required></label>
+          <label class="campo">Rol<select class="txt" id="i-rol"><option value="ventas">Equipo: ve ventas, pedidos, compras y clientes</option><option value="admin">Dueño: todo, incluidos costos y precios</option></select></label>
+          <button class="btn btn-1" type="submit">Crear invitación</button>
+          <p class="err" id="i-err" role="alert"></p>
+        </form>
+        <div id="i-ok" class="invit-ok oculto"></div>
+        <div class="roles">
+          <p><b>Dueño:</b> ve y cambia todo: precios, costos, márgenes, envío, inversión, datos de compra y equipo.</p>
+          <p><b>Equipo:</b> ve ventas, pedidos, compras y clientes; cambia estados de pedidos, registra compras y cuenta stock. <b>No ve costos ni márgenes</b> ni cambia precios.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 </div>
 
@@ -274,8 +366,10 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
     <p class="nota" style="margin-bottom:16px">Con el correo y la clave que te dio la agencia.</p>
     <label class="campo">Correo<input class="txt" id="l-correo" type="email" autocomplete="username" required></label>
     <label class="campo">Clave<input class="txt" id="l-clave" type="password" autocomplete="current-password" required></label>
+    <label class="campo oculto" id="l-codigo-c">Código de invitación<input class="txt" id="l-codigo" autocomplete="off" maxlength="12" style="text-transform:uppercase;letter-spacing:.15em"></label>
     <p class="err" id="l-err" role="alert"></p>
-    <button class="btn btn-1" type="submit" style="width:100%;justify-content:center;padding:13px">Entrar</button>
+    <button class="btn btn-1" type="submit" id="l-btn" style="width:100%;justify-content:center;padding:13px">Entrar</button>
+    <button type="button" class="link" id="l-modo">¿Te invitaron al equipo? Usa tu código</button>
   </form>
 </div>
 
@@ -295,7 +389,8 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
 
   /* ---------- conexión: con Supabase pide sesión del dueño y carga los datos de la base ---------- */
   let P = productos(), porId = Object.fromEntries(P.map(p => [p.id, p]));
-  const R = { pedidos: [], eventos: [], inversion: {} };   // datos de la base (modo Supabase)
+  const R = { pedidos: [], eventos: [], inversion: {}, inv: [], rol: 'admin' };   // datos de la base (modo Supabase)
+  let ADM = true;   // dueño: ve costos y edita precios. El equipo (rol ventas) no.
   const conProductos = lista => {   // precios y costos de la base + fotos, referencias y textos de config.js
     const base = Object.fromEntries(T.productos.map(p => [p.id, p]));
     P = lista.map(p => Object.assign({ bench: '—', conf: '', confNota: '' }, base[p.id] || {}, p, { precio: +p.precio, costo: +p.costo }));
@@ -308,17 +403,37 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
       items: (p.items || []).map(i => ({ id: i.id, cant: i.cant, precio: +i.precio, costo: +i.costo })) }));
     R.eventos = r.eventos.map(e => Object.assign({}, e, { t: new Date(e.dia + 'T00:00:00').getTime() }));
     R.inversion = Object.fromEntries(Object.entries(r.inversion || {}).map(([k, v]) => [k, +v]));
+    R.rol = r.rol || 'admin'; ADM = R.rol === 'admin';
     conProductos(r.productos);
+    R.inv = await api.rpc('inventario').catch(() => []);
     try { const c = await api.rpc('catalogo'); T.envio = { domicilio: +c.envio.domicilio, gratisDesde: +c.envio.gratisDesde }; } catch (e) {}
   }
   async function entrar() {
     let yo = api.sesion() ? await api.rpc('yo').catch(() => null) : null;
     if (!yo) {
       api.salir(); $('#login').classList.remove('oculto'); $('#l-correo').focus();
+      let conCodigo = false;
+      $('#l-modo').onclick = () => {
+        conCodigo = !conCodigo;
+        $('#l-codigo-c').classList.toggle('oculto', !conCodigo);
+        $('#l-btn').textContent = conCodigo ? 'Activar mi acceso' : 'Entrar';
+        $('#l-modo').textContent = conCodigo ? 'Ya tengo acceso: solo entrar' : '¿Te invitaron al equipo? Usa tu código';
+        $('#login-tit').textContent = conCodigo ? 'Activa tu acceso al equipo' : 'Ingresa a tu panel';
+        $('#l-err').textContent = conCodigo ? '' : '';
+      };
       await new Promise(ok => { $('#f-login').onsubmit = async e => {
         e.preventDefault(); const f = e.currentTarget; f.classList.add('cargando'); $('#l-err').textContent = '';
         try {
-          await api.login($('#l-correo').value.trim(), $('#l-clave').value);
+          const correo = $('#l-correo').value.trim(), clave = $('#l-clave').value;
+          if (conCodigo) {
+            // Con la cuenta que ya tiene (si usa otro negocio de la agencia) o creando una nueva con esta clave.
+            if (clave.length < 8) throw new Error('La clave debe tener al menos 8 caracteres.');
+            try { await api.login(correo, clave); } catch (er) { await api.crearCuenta(correo, clave); }
+            const a = await api.rpc('invitacion_activar', { p_codigo: $('#l-codigo').value.trim() });
+            if (!a || !a.ok) { api.salir(); throw new Error((a && a.error) || 'No se pudo activar.'); }
+          } else {
+            await api.login(correo, clave);
+          }
           const y = await api.rpc('yo');
           if (!y) { api.salir(); throw new Error('Este usuario no tiene acceso al panel.'); }
           $('#login').classList.add('oculto'); yo = y; ok();
@@ -329,7 +444,7 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
     const n = (yo && yo.nombre) || '';
     $('#pie-menu').innerHTML = `Conectado${n ? ' como ' + esc(n) : ''}.<br><a href="index.html">Ver la tienda →</a> · <a href="#" id="salir">Salir</a>`;
     $('#salir').onclick = e => { e.preventDefault(); api.salir(); location.reload(); };
-    $('#c-envio').classList.remove('oculto'); $('#restaurar').classList.add('oculto');
+    $('#c-envio').classList.toggle('oculto', !ADM); $('#restaurar').classList.add('oculto');
     $('#env-dom').value = T.envio.domicilio; $('#env-gratis').value = T.envio.gratisDesde;
   }
   if (api.activo) await entrar();
@@ -478,19 +593,22 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
     const evp = embudo(a0, a1), visitasP = Object.values(evp).reduce((s, e) => s + e.visita, 0);
     $('#kpis').innerHTML =
       kpi('Ventas', usd(m.ventas), delta(m.ventas, mp.ventas), `${m.pedidos} pedidos · sin envío`) +
-      kpi('Utilidad bruta', usd(m.utilidad), delta(m.utilidad, mp.utilidad), 'ventas − costo del producto') +
-      kpi('Margen bruto', pct(m.margen, 1), delta(m.margen, mp.margen), 'meta: 50 % o más') +
+      (ADM ? kpi('Utilidad bruta', usd(m.utilidad), delta(m.utilidad, mp.utilidad), 'ventas − costo del producto') +
+             kpi('Margen bruto', pct(m.margen, 1), delta(m.margen, mp.margen), 'meta: 50 % o más')
+           : kpi('Pedidos', m.pedidos, delta(m.pedidos, mp.pedidos), `${m.anulados} anulados`) +
+             kpi('Clientes', new Set(act.filter(valido).map(p => p.cliente.tel)).size, '', `compraron en ${dias} días`)) +
       kpi('Ticket promedio', usd(m.ticket), delta(m.ticket, mp.ticket), `conversión ${pct(m.pedidos / visitas, 1)}`);
 
     // tendencia
     const n = dias, ets = [], vv = [], uu = [];
     for (let i = 0; i < n; i++) { const t = d0 + i * DIA; ets.push(t); const dd = act.filter(p => valido(p) && p.fecha >= t && p.fecha < t + DIA); const s = dd.reduce((a, p) => a + sub(p), 0); vv.push(s); uu.push(s - dd.reduce((a, p) => a + costo(p), 0)); }
-    lineas($('#g-tendencia'), ets, [{ n: 'Ventas', c: 'var(--s1)', v: vv }, { n: 'Utilidad bruta', c: 'var(--s2)', v: uu }]);
+    lineas($('#g-tendencia'), ets, ADM ? [{ n: 'Ventas', c: 'var(--s1)', v: vv }, { n: 'Utilidad bruta', c: 'var(--s2)', v: uu }] : [{ n: 'Ventas', c: 'var(--s1)', v: vv }]);
+    document.querySelectorAll('.leyenda-util').forEach(x => x.hidden = !ADM);
     $('#t-tendencia').innerHTML = `<table><thead><tr><th>Día</th><th class="n">Ventas</th><th class="n">Utilidad</th></tr></thead><tbody>${ets.map((t, i) => `<tr><td>${fecha(t)}</td><td class="n">${usd(vv[i])}</td><td class="n">${usd(uu[i])}</td></tr>`).reverse().join('')}</tbody></table>`;
 
     // por línea
     const pl = porLinea(act);
-    barras($('#g-lineas'), pl.sort((a, b) => b.ventas - a.ventas).map(x => ({ l: x.p.nombre, s: `utilidad ${usd(x.utilidad)} · margen ${pct(x.ventas ? x.utilidad / x.ventas : NaN)}`, v: x.ventas, c: 'var(--s1)' })), usd);
+    barras($('#g-lineas'), pl.sort((a, b) => b.ventas - a.ventas).map(x => ({ l: x.p.nombre, s: ADM ? `utilidad ${usd(x.utilidad)} · margen ${pct(x.ventas ? x.utilidad / x.ventas : NaN)}` : `${x.unidades} packs`, v: x.ventas, c: 'var(--s1)' })), usd);
 
     // día de la semana
     const nom = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'], cnt = [0, 0, 0, 0, 0, 0, 0];
@@ -502,10 +620,12 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
     const ins = [];
     const peor = pl.filter(x => x.ventas > 0).sort((a, b) => a.utilidad / a.ventas - b.utilidad / b.ventas)[0];
     const mejor = pl.slice().sort((a, b) => b.utilidad - a.utilidad)[0];
-    if (mejor && mejor.utilidad > 0) ins.push(['good', 'ok', `<b>${mejor.p.nombre}</b> es tu mayor fuente de utilidad (${usd(mejor.utilidad)}). Ponlo primero en historias y en la bio.`]);
-    if (peor && peor.ventas && peor.utilidad / peor.ventas < .45) ins.push(['warn', 'alerta', `<b>${peor.p.nombre}</b> deja solo ${pct(peor.utilidad / peor.ventas)} de margen. Súbele el precio o véndelo en combo con patitas.`]);
+    const plc = compraPlan(), agotan = plc.filter(x => x.estado === 'agota');
+    if (agotan.length) ins.push(['bad', 'caja', `${agotan.length === 1 ? '<b>' + agotan[0].p.nombre + '</b> se acaba' : '<b>' + agotan.length + ' productos</b> se acaban'} antes de que llegue la próxima compra. <a href="#" data-ir="compras">Ver lista de compra →</a>`]);
+    if (ADM && mejor && mejor.utilidad > 0) ins.push(['good', 'ok', `<b>${mejor.p.nombre}</b> es tu mayor fuente de utilidad (${usd(mejor.utilidad)}). Ponlo primero en historias y en la bio.`]);
+    if (ADM && peor && peor.ventas && peor.utilidad / peor.ventas < .45) ins.push(['warn', 'alerta', `<b>${peor.p.nombre}</b> deja solo ${pct(peor.utilidad / peor.ventas)} de margen. Súbele el precio o véndelo en combo con patitas.`]);
     const riesgo = P.filter(p => p.conf === 'riesgo' || p.conf === 'baja');
-    if (riesgo.length) ins.push(['bad', 'alerta', `Precio sin referencia sólida en: ${riesgo.map(p => p.nombre).join(', ')}. Pesa la tráquea por tamaño antes de fijar precio.`]);
+    if (ADM && riesgo.length) ins.push(['bad', 'alerta', `Precio sin referencia sólida en: ${riesgo.map(p => p.nombre).join(', ')}. Pesa la tráquea por tamaño antes de fijar precio.`]);
     const c = clientes(L), dorm = c.filter(x => x.n >= 2 && Date.now() - x.ultimo > 30 * DIA).length;
     if (dorm) ins.push(['warn', 'cli', `${dorm} clientes que compraban seguido no piden hace más de 30 días. <a href="#" data-ir="clientes">Escríbeles hoy →</a>`]);
     const diaTop = orden.reduce((a, i) => cnt[i] > cnt[a] ? i : a, 1);
@@ -553,12 +673,13 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
   $('#buscar').addEventListener('input', pedidos); $('#f-estado').addEventListener('change', pedidos);
   $('#csv').addEventListener('click', () => {
     const [d0, d1] = rango(), L = todos().filter(p => enRango(p, d0, d1));
-    const filas = [['codigo', 'fecha', 'cliente', 'telefono', 'sector', 'canal', 'productos', 'subtotal', 'costo', 'envio', 'estado']].concat(
-      L.map(p => [p.id, new Date(p.fecha).toISOString(), p.cliente.nombre, p.cliente.tel, p.cliente.sector, p.canal, p.items.map(i => i.cant + 'x ' + i.id).join(' | '), sub(p).toFixed(2), costo(p).toFixed(2), (p.envio || 0).toFixed(2), p.estado]));
+    const filas = [['codigo', 'fecha', 'cliente', 'telefono', 'sector', 'canal', 'productos', 'subtotal', ADM ? 'costo' : '', 'envio', 'estado']].concat(
+      L.map(p => [p.id, new Date(p.fecha).toISOString(), p.cliente.nombre, p.cliente.tel, p.cliente.sector, p.canal, p.items.map(i => i.cant + 'x ' + i.id).join(' | '), sub(p).toFixed(2), ADM ? costo(p).toFixed(2) : '', (p.envio || 0).toFixed(2), p.estado]));
     const csv = filas.map(f => f.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv' })); a.download = `pedidos-${dias}d.csv`; a.click();
   });
   function badge() { const n = todos().filter(p => p.estado === 'nuevo').length; $('#b-nuevos').textContent = n || ''; $('#b-nuevos').style.display = n ? '' : 'none'; }
+  function badgeCompras() { const n = compraPlan().filter(x => x.estado === 'agota').length; $('#b-compras').textContent = n || ''; $('#b-compras').style.display = n ? '' : 'none'; }
 
   /* ---------- PRECIOS ---------- */
   function precios() {
@@ -613,8 +734,9 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
     $('#kpis-mkt').innerHTML =
       kpi('Visitas a la tienda', Math.round(tot('visita')).toLocaleString('es-EC'), delta(tot('visita'), totA('visita'))) +
       kpi('Conversión', pct(act.length / tot('visita'), 1), delta(act.length / tot('visita'), ant.length / totA('visita')), 'visitas que terminan en pedido') +
+      (!ADM ? kpi('Pedidos', act.length, delta(act.length, ant.length), 'en el período') + kpi('Clientes nuevos', nuevosAct.length, '', 'primera compra en el período') :
       kpi('Retorno de la inversión', invTot ? (ventas / invTot).toFixed(1).replace('.', ',') + '×' : '—', '', `inversión ${usd(invTot)} en ${dias} días`) +
-      kpi('Costo por cliente nuevo', nuevosAct.length && invTot ? usd(invTot / nuevosAct.length) : '—', '', `${nuevosAct.length} clientes nuevos`);
+      kpi('Costo por cliente nuevo', nuevosAct.length && invTot ? usd(invTot / nuevosAct.length) : '—', '', `${nuevosAct.length} clientes nuevos`));
     const etapas = [['visita', 'Visitas'], ['catalogo', 'Vieron el catálogo'], ['carrito', 'Agregaron al pedido'], ['whatsapp', 'Enviaron a WhatsApp']];
     const filas = etapas.map(([k, l], i) => ({ l, v: tot(k), c: `var(--seq-${4 - i > 0 ? 5 - i : 1})`, s: i ? pct(tot(k) / tot(etapas[i - 1][0])) + ' del paso anterior' : '' }));
     filas.push({ l: 'Pedidos confirmados', v: act.length, c: 'var(--seq-1)', s: pct(act.length / tot('whatsapp')) + ' de los WhatsApp' });
@@ -630,7 +752,7 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
     $('#t-canales').innerHTML = porCanal.map(x => {
       const roas = x.i ? x.v / x.i : NaN;
       return `<tr><td><b>${CANALES[x.c]}</b></td><td class="n">${Math.round(x.vis)}</td><td class="n">${x.ped}</td><td class="n">${pct(x.vis ? x.ped / x.vis : NaN, 1)}</td><td class="n">${usd(x.v)}</td>
-      <td class="n"><input class="num" type="number" min="0" step="5" value="${inv[x.c] || 0}" data-inv="${x.c}" aria-label="Inversión mensual en ${CANALES[x.c]}"></td>
+      <td class="n">${ADM ? `<input class="num" type="number" min="0" step="5" value="${inv[x.c] || 0}" data-inv="${x.c}" aria-label="Inversión mensual en ${CANALES[x.c]}">` : '<span style="color:var(--muted)">solo dueño</span>'}</td>
       <td class="n">${isFinite(roas) ? (roas >= 3 ? pill('good', 'ok', roas.toFixed(1).replace('.', ',') + '×') : roas >= 1.5 ? pill('warn', 'alerta', roas.toFixed(1).replace('.', ',') + '×') : pill('bad', 'x', roas.toFixed(1).replace('.', ',') + '×')) : '<span style="color:var(--muted)">orgánico</span>'}</td>
       <td class="n">${x.i && x.nuevos ? usd(x.i / x.nuevos) : '—'}</td></tr>`;
     }).join('');
@@ -684,18 +806,260 @@ input.txt,select.txt{border:1px solid var(--line);border-radius:10px;padding:9px
   const fav = c => { const id = Object.entries(c.prods).sort((a, b) => b[1] - a[1])[0]; return id && porId[id[0]] ? porId[id[0]].nombre.toLowerCase() : 'snacks'; };
   $('#segmentos').addEventListener('click', e => { const b = e.target.closest('[data-seg]'); if (b) { segActivo = b.dataset.seg; vistaClientes(); } });
 
+  /* ---------- COMPRAS: proyección semanal ---------- */
+  const SEM = 7 * DIA, Z_SEG = 1.65, Z_RANGO = 1.28;            // 95 % para seguridad, 80 % para el rango probable
+  const lunesHoy = hoy0 - ((new Date(hoy0).getDay() + 6) % 7) * DIA;   // lunes de esta semana (hora local)
+  const fSem = t => new Date(t).toLocaleDateString('es-EC', { day: 'numeric', month: 'short' });
+  // Packs vendidos por semana completa (lunes a domingo), de la más antigua a la más reciente. No incluye la semana en curso.
+  function semanas(L, id, n) {
+    const out = Array(n).fill(0);
+    for (const p of L) {
+      if (!valido(p) || p.fecha >= lunesHoy) continue;
+      const k = Math.floor((lunesHoy - p.fecha) / SEM); if (k >= n) continue;
+      for (const i of p.items) if (i.id === id) out[n - 1 - k] += i.cant;
+    }
+    return out;
+  }
+  function pronosticar(w) {
+    const u = w.slice(-4), pesos = [.1, .2, .3, .4].slice(4 - u.length), sp = pesos.reduce((a, b) => a + b, 0) || 1;
+    const base = u.reduce((s, v, i) => s + v * pesos[i], 0) / sp;
+    const ult = w.slice(-4).reduce((a, b) => a + b, 0), prev = w.slice(-8, -4).reduce((a, b) => a + b, 0);
+    const t = prev > 0 ? Math.min(1.3, Math.max(.7, ult / prev)) : 1;   // tendencia limitada
+    const f = base * (1 + (t - 1) * .5);
+    const media = w.reduce((a, b) => a + b, 0) / (w.length || 1);
+    const sd = Math.sqrt(w.reduce((s, v) => s + (v - media) ** 2, 0) / Math.max(1, w.length - 1));
+    return { f, sd, t, conDatos: w.filter(v => v > 0).length };
+  }
+  const CFG0 = { proveedor: '', dias: 2, cob: 7, mult: 1 };
+  function demoStock(pl) {   // demo: stock de ejemplo distinto por producto para ver los estados
+    let st = LS.get('dogo_stock_demo', null);
+    if (!st && pl) { const fx = [.35, 1.9, .9, .15, 1.3, .7]; st = {}; pl.forEach((x, i) => st[x.p.id] = Math.round(x.pr.f * fx[i % fx.length])); LS.set('dogo_stock_demo', st); }
+    return st || {};
+  }
+  function cfgCompra(id) {
+    if (api.activo) { const x = R.inv.find(i => i.id === id); return x ? { proveedor: x.proveedor || '', dias: x.dias_entrega, cob: x.cobertura_dias, mult: x.multiplo, stock: x.stock } : Object.assign({ stock: null }, CFG0); }
+    const c = Object.assign({}, CFG0, { proveedor: 'Proveedor principal' }, LS.get('dogo_cfg_compra', {})[id] || {});
+    const st = LS.get('dogo_stock_demo', {})[id]; c.stock = st == null ? null : st; return c;
+  }
+  function compraPlan() {
+    const L = todos();
+    let pl = P.filter(p => p.activo !== false).map(p => ({ p, w: semanas(L, p.id, 8) }));
+    const transcurridos = Math.max(1, Math.round((hoy0 - lunesHoy) / DIA) + 1);
+    pl.forEach(x => {
+      x.pr = pronosticar(x.w);
+      // Sin semanas completas todavía (negocio nuevo): se estima con el ritmo de la semana en curso.
+      const enCurso = L.filter(p => valido(p) && p.fecha >= lunesHoy).reduce((s, p) => s + p.items.filter(i => i.id === x.p.id).reduce((a, i) => a + i.cant, 0), 0);
+      if (x.pr.conDatos === 0 && enCurso > 0) { const f = enCurso / transcurridos * 7; x.pr = { f, sd: f * .5, t: 1, conDatos: 0 }; x.estimado = true; }
+    });
+    if (!api.activo) demoStock(pl);
+    return pl.map(x => {
+      const c = cfgCompra(x.p.id), d = x.pr.f / 7;
+      const ss = Math.ceil(Z_SEG * x.pr.sd * Math.sqrt((c.dias + c.cob) / 7));
+      const necesidad = d * (c.dias + c.cob) + ss;
+      const st = c.stock == null ? null : Math.max(0, c.stock);
+      const falta = Math.max(0, necesidad - (st || 0));
+      const sug = falta > 0 ? Math.ceil(Math.ceil(falta) / c.mult) * c.mult : 0;
+      const cobertura = d > 0 && st != null ? st / d : Infinity;
+      const estado = st == null ? 'sin' : d === 0 ? 'quieto' : st <= d * c.dias ? 'agota' : cobertura < c.dias + c.cob ? 'reponer' : 'ok';
+      const ed = compraEdit[x.p.id];
+      return Object.assign(x, { c, d, ss, necesidad, st, sug, comprar: ed == null ? sug : ed, cobertura, estado,
+        lo: Math.max(0, x.pr.f - Z_RANGO * x.pr.sd), hi: x.pr.f + Z_RANGO * x.pr.sd });
+    });
+  }
+  function precision() {   // se prueba el método en las 4 semanas anteriores: error medio ponderado por lo vendido
+    const L = todos(); let err = 0, real = 0;
+    for (const p of P) { const w = semanas(L, p.id, 12); for (let k = 8; k < 12; k++) { err += Math.abs(pronosticar(w.slice(k - 8, k)).f - w[k]); real += w[k]; } }
+    return real ? err / real : NaN;
+  }
+  let compraEdit = {}, contando = false, cProd = null;
+  const ESTADO = { agota: ['bad', 'x', 'Se agota antes de que llegue'], reponer: ['warn', 'alerta', 'Reponer'], ok: ['good', 'ok', 'Suficiente'],
+                   sin: ['neu', 'alerta', 'Falta contar'], quieto: ['neu', 'alerta', 'Sin ventas'] };
+  function spark(x) {   // 8 barras vendidas + 1 barra de pronóstico rayada con su rango
+    const W = 132, H = 34, n = 9, bw = 10, gap = (W - n * bw) / (n - 1), max = Math.max(1, ...x.w, x.hi), y = v => H - 2 - v / max * (H - 4);
+    let g = x.w.map((v, i) => `<rect x="${i * (bw + gap)}" y="${y(v)}" width="${bw}" height="${Math.max(1, H - 2 - y(v))}" rx="2" fill="var(--seq-2)"/>`).join('');
+    const fx = 8 * (bw + gap);
+    g += `<rect x="${fx}" y="${y(x.pr.f)}" width="${bw}" height="${Math.max(1, H - 2 - y(x.pr.f))}" rx="2" fill="url(#rayas)" stroke="var(--seq-4)" stroke-width="1"/>`;
+    g += `<line x1="${fx + bw / 2}" x2="${fx + bw / 2}" y1="${y(x.hi)}" y2="${y(x.lo)}" stroke="var(--ink)" stroke-width="1.2"/>`;
+    return `<svg class="spark" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Vendido las últimas 8 semanas: ${x.w.join(', ')}; pronóstico ${Math.round(x.pr.f)}">${g}</svg>`;
+  }
+  function compras() {
+    const pl = compraPlan(), prec = precision(), prox = lunesHoy + SEM;
+    const lin = pl.filter(x => x.comprar > 0), packs = lin.reduce((s, x) => s + x.comprar, 0), dinero = lin.reduce((s, x) => s + x.comprar * (x.p.costo || 0), 0);
+    const agota = pl.filter(x => x.estado === 'agota').length, repo = pl.filter(x => x.estado === 'reponer' || x.estado === 'agota').length;
+    $('#compra-semana').textContent = `semana del ${fSem(prox)} al ${fSem(prox + 6 * DIA)} · con ventas hasta el ${fSem(lunesHoy - DIA)}`;
+    $('#kpis-compras').innerHTML =
+      kpi('Compra sugerida', ADM ? usd(dinero) : packs + ' packs', '', ADM ? `${packs} packs · ${lin.length} productos` : `${lin.length} productos`) +
+      kpi('Por reponer', `${repo} de ${pl.length}`, '', 'productos bajo su cobertura') +
+      kpi('Se agotan antes de la entrega', agota, agota ? '<span class="delta down">urgente</span>' : '', 'el stock no alcanza hasta que llegue') +
+      kpi('Precisión del pronóstico', isFinite(prec) ? '±' + pct(prec) : '—', '', 'error medio probado en las 4 semanas anteriores');
+    $('#t-compras').innerHTML = pl.map(x => {
+      const [k, ic, tx] = ESTADO[x.estado];
+      return `<tr data-id="${x.p.id}" class="${cProd === x.p.id ? 'sel' : ''}">
+        <td><b>${x.p.nombre}</b><br><small style="color:var(--muted)">${esc(x.c.proveedor || 'Sin proveedor')} · llega en ${x.c.dias} d${x.estimado ? ' · estimado con esta semana' : x.pr.conDatos < 3 ? ' · historia corta' : ''}</small></td>
+        <td>${spark(x)}</td>
+        <td class="n" data-l="Próxima semana"><b>${Math.round(x.pr.f)}</b> packs<br><small style="color:var(--muted)">entre ${Math.floor(x.lo)} y ${Math.ceil(x.hi)}</small></td>
+        <td class="n" data-l="Stock">${contando ? `<input class="num" type="number" min="0" step="1" value="${x.st ?? ''}" data-contar="${x.p.id}" aria-label="Stock contado de ${x.p.nombre}">` : (x.st == null ? '—' : x.st)}</td>
+        <td data-l="Cobertura">${pill(k, ic, tx)}<br><small style="color:var(--muted)">${x.st == null || !isFinite(x.cobertura) ? '' : (Math.floor(x.cobertura) === 1 ? '1 día' : Math.floor(x.cobertura) + ' días') + ' de stock'}</small></td>
+        <td class="n" data-l="Seguridad">${x.ss}</td>
+        <td class="n" data-l="Comprar"><input class="num" type="number" min="0" step="${x.c.mult}" value="${x.comprar}" data-comprar="${x.p.id}" aria-label="Comprar ${x.p.nombre}">${x.comprar !== x.sug ? `<br><small style="color:var(--muted)">sugerido ${x.sug}</small>` : ''}</td>
+        <td class="n solo-admin" data-l="Costo est."${ADM ? '' : ' hidden'}>${usd(x.comprar * (x.p.costo || 0))}</td></tr>`;
+    }).join('');
+    $('#f-compras').innerHTML = `<tr><td colspan="6">Total a comprar</td><td class="n">${packs} packs</td><td class="n solo-admin"${ADM ? '' : ' hidden'}>${usd(dinero)}</td></tr>`;
+    $('#c-contar').textContent = contando ? 'Guardar conteo' : 'Contar stock';
+    // gráfico del producto elegido
+    const sel = $('#c-prod');
+    if (!sel.options.length || sel.options.length !== pl.length) sel.innerHTML = pl.map(x => `<option value="${x.p.id}">${x.p.nombre}</option>`).join('');
+    if (!cProd || !pl.find(x => x.p.id === cProd)) cProd = (pl.slice().sort((a, b) => b.pr.f - a.pr.f)[0] || {}).p?.id;
+    sel.value = cProd || '';
+    const x = pl.find(z => z.p.id === cProd); if (x) demanda(x);
+    // configuración (dueño)
+    if (ADM) $('#t-cfg').innerHTML = pl.map(x => `<tr data-id="${x.p.id}"><td><b>${x.p.nombre}</b></td>
+      <td><input class="txt" data-cfg="proveedor" value="${esc(x.c.proveedor)}" placeholder="Ej.: Camal Norte" style="width:100%;min-width:140px"></td>
+      <td class="n"><input class="num" type="number" min="0" max="30" data-cfg="dias" value="${x.c.dias}"></td>
+      <td class="n"><input class="num" type="number" min="1" max="30" data-cfg="cob" value="${x.c.cob}"></td>
+      <td class="n"><input class="num" type="number" min="1" max="500" data-cfg="mult" value="${x.c.mult}"> packs</td>
+      <td><button class="btn btn-2" type="button" data-cfg-guardar>Guardar</button></td></tr>`).join('');
+  }
+  function demanda(x) {   // barras por semana + pronóstico rayado con rango; tooltip al pasar o tocar
+    const W = 560, H = 220, m = { t: 14, r: 10, b: 28, l: 34 }, iw = W - m.l - m.r, ih = H - m.t - m.b, n = 9;
+    const max = Math.max(1, ...x.w, x.hi), paso = nice(max / 4), top = paso * 4, bw = iw / n * .62, slot = iw / n;
+    const y = v => m.t + ih - v / top * ih, xs = i => m.l + i * slot + (slot - bw) / 2;
+    const etiq = i => i < 8 ? 'sem ' + fSem(lunesHoy - (8 - i) * SEM) : 'próxima';
+    let g = '';
+    for (let k = 0; k <= 4; k++) g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(k * paso)}" y2="${y(k * paso)}" stroke="var(--grid)"/><text x="${m.l - 6}" y="${y(k * paso) + 4}" text-anchor="end">${Math.round(k * paso)}</text>`;
+    x.w.forEach((v, i) => g += `<rect class="b" data-i="${i}" x="${xs(i)}" y="${y(v)}" width="${bw}" height="${Math.max(1, y(0) - y(v))}" rx="4" fill="var(--seq-3)"/>`);
+    g += `<rect class="b" data-i="8" x="${xs(8)}" y="${y(x.pr.f)}" width="${bw}" height="${Math.max(1, y(0) - y(x.pr.f))}" rx="4" fill="url(#rayas)" stroke="var(--seq-4)" stroke-width="1.5"/>`;
+    const cx = xs(8) + bw / 2;
+    g += `<line x1="${cx}" x2="${cx}" y1="${y(x.hi)}" y2="${y(x.lo)}" stroke="var(--ink)" stroke-width="1.5"/><line x1="${cx - 6}" x2="${cx + 6}" y1="${y(x.hi)}" y2="${y(x.hi)}" stroke="var(--ink)" stroke-width="1.5"/><line x1="${cx - 6}" x2="${cx + 6}" y1="${y(x.lo)}" y2="${y(x.lo)}" stroke="var(--ink)" stroke-width="1.5"/>`;
+    g += `<text x="${cx}" y="${y(x.hi) - 6}" text-anchor="middle" style="fill:var(--ink);font-weight:700">${Math.round(x.pr.f)}</text>`;
+    for (let i = 0; i < n; i++) if (i % 2 === 0 || i === 8) g += `<text x="${xs(i) + bw / 2}" y="${H - 8}" text-anchor="middle">${i < 8 ? fSem(lunesHoy - (8 - i) * SEM) : 'próxima'}</text>`;
+    for (let i = 0; i < n; i++) g += `<rect class="hit" data-i="${i}" x="${m.l + i * slot}" y="${m.t}" width="${slot}" height="${ih}" fill="transparent"/>`;
+    $('#g-demanda').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Demanda semanal de ${esc(x.p.nombre)}"><defs><pattern id="rayas" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="var(--card)"/><line x1="0" y1="0" x2="0" y2="6" stroke="var(--seq-3)" stroke-width="3"/></pattern></defs>${g}</svg>`;
+    const svg = $('#g-demanda svg');
+    const ver = ev => {
+      const h = ev.target.closest('.hit'); if (!h) return; const i = +h.dataset.i, r = svg.getBoundingClientRect();
+      tip.innerHTML = i < 8 ? `<b>${etiq(i)}</b>${x.w[i]} packs vendidos` : `<b>Próxima semana</b>Pronóstico ${Math.round(x.pr.f)} packs<br>Rango probable ${Math.floor(x.lo)}–${Math.ceil(x.hi)}`;
+      tip.style.left = (r.left + (m.l + i * slot + slot / 2) / W * r.width + scrollX) + 'px'; tip.style.top = (r.top + m.t / H * r.height + scrollY) + 'px'; tip.style.opacity = 1;
+    };
+    svg.addEventListener('pointermove', ver); svg.addEventListener('pointerdown', ver); svg.addEventListener('pointerleave', () => tip.style.opacity = 0);
+    $('#t-demanda').innerHTML = `<table><thead><tr><th>Semana</th><th class="n">Packs</th></tr></thead><tbody>${x.w.map((v, i) => `<tr><td>${etiq(i)}</td><td class="n">${v}</td></tr>`).join('')}<tr><td><b>Próxima (pronóstico)</b></td><td class="n"><b>${Math.round(x.pr.f)}</b> (${Math.floor(x.lo)}–${Math.ceil(x.hi)})</td></tr></tbody></table>`;
+  }
+  $('#c-prod').addEventListener('change', e => { cProd = e.target.value; compras(); });
+  $('#t-compras').addEventListener('click', e => { const tr = e.target.closest('tr[data-id]'); if (tr && !e.target.closest('input')) { cProd = tr.dataset.id; compras(); } });
+  $('#t-compras').addEventListener('change', e => {
+    const i = e.target.closest('[data-comprar]'); if (!i) return;
+    compraEdit[i.dataset.comprar] = Math.max(0, Math.round(parseFloat(i.value) || 0)); compras();
+  });
+  const lineasCompra = () => compraPlan().filter(x => x.comprar > 0);
+  $('#c-wa').addEventListener('click', () => {
+    const L = lineasCompra(); if (!L.length) { $('#c-msg').textContent = 'No hay nada que comprar esta semana.'; return; }
+    const grupos = {}; L.forEach(x => (grupos[x.c.proveedor || 'Proveedor'] = grupos[x.c.proveedor || 'Proveedor'] || []).push(x));
+    const prox = lunesHoy + SEM;
+    const txt = Object.entries(grupos).map(([pv, xs]) => `*${pv}*\n` + xs.map(x => `• ${x.comprar} × ${x.p.nombre} (${x.p.pack})`).join('\n')).join('\n\n');
+    window.open('https://wa.me/?text=' + encodeURIComponent(`Hola, pedido de ${T.nombre} para la semana del ${fSem(prox)}:\n\n${txt}\n\nGracias.`), '_blank', 'noopener');
+  });
+  $('#c-csv').addEventListener('click', () => {
+    const pl = compraPlan();
+    const filas = [['producto', 'proveedor', ...[...Array(8)].map((_, i) => 'sem_' + fSem(lunesHoy - (8 - i) * SEM)), 'pronostico', 'minimo', 'maximo', 'stock', 'seguridad', 'comprar', ADM ? 'costo_estimado' : '']]
+      .concat(pl.map(x => [x.p.nombre, x.c.proveedor, ...x.w, Math.round(x.pr.f), Math.floor(x.lo), Math.ceil(x.hi), x.st ?? '', x.ss, x.comprar, ADM ? (x.comprar * (x.p.costo || 0)).toFixed(2) : '']));
+    const csv = filas.map(f => f.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv' })); a.download = `compra-${new Date(lunesHoy + SEM).toISOString().slice(0, 10)}.csv`; a.click();
+  });
+  $('#c-recibida').addEventListener('click', async () => {
+    const L = lineasCompra(); if (!L.length) { $('#c-msg').textContent = 'No hay cantidades para registrar.'; return; }
+    if (!confirm(`¿Registrar como recibida esta compra?\n\n${L.map(x => `${x.comprar} × ${x.p.nombre}`).join('\n')}\n\nSe suma al stock.`)) return;
+    try {
+      if (api.activo) {
+        await api.rpc('compra_registrar', { p_items: L.map(x => Object.assign({ id: x.p.id, cant: x.comprar }, ADM && x.p.costo ? { costo: x.p.costo } : {})), p_nota: 'Lista de compra semanal' });
+        R.inv = await api.rpc('inventario');
+      } else { const st = LS.get('dogo_stock_demo', {}); L.forEach(x => st[x.p.id] = (st[x.p.id] || 0) + x.comprar); LS.set('dogo_stock_demo', st); }
+      compraEdit = {}; $('#c-msg').textContent = `Compra registrada: ${L.reduce((s, x) => s + x.comprar, 0)} packs sumados al stock.`; compras(); badge();
+    } catch (err) { $('#c-msg').textContent = 'No se registró: ' + err.message; }
+  });
+  $('#c-contar').addEventListener('click', async () => {
+    if (!contando) { contando = true; compras(); $('#c-msg').textContent = 'Escribe lo que hay en bodega y presiona «Guardar conteo».'; return; }
+    const ins = [...document.querySelectorAll('[data-contar]')].filter(i => i.value !== '');
+    try {
+      for (const i of ins) {
+        const v = Math.max(0, Math.round(+i.value));
+        if (api.activo) await api.rpc('inventario_contar', { p_id: i.dataset.contar, p_real: v });
+        else { const st = LS.get('dogo_stock_demo', {}); st[i.dataset.contar] = v; LS.set('dogo_stock_demo', st); }
+      }
+      if (api.activo) R.inv = await api.rpc('inventario');
+      contando = false; $('#c-msg').textContent = `Conteo guardado (${ins.length} productos).`; compras(); badge();
+    } catch (err) { $('#c-msg').textContent = 'No se guardó el conteo: ' + err.message; }
+  });
+  $('#t-cfg').addEventListener('click', async e => {
+    const b = e.target.closest('[data-cfg-guardar]'); if (!b) return;
+    const tr = b.closest('tr'), id = tr.dataset.id, v = k => tr.querySelector(`[data-cfg="${k}"]`).value;
+    const c = { proveedor: v('proveedor').trim(), dias: Math.min(30, Math.max(0, +v('dias') || 0)), cob: Math.min(30, Math.max(1, +v('cob') || 7)), mult: Math.min(500, Math.max(1, +v('mult') || 1)) };
+    try {
+      if (api.activo) { await api.rpc('producto_compra_config', { p_id: id, p_proveedor: c.proveedor, p_dias_entrega: c.dias, p_cobertura_dias: c.cob, p_multiplo: c.mult }); R.inv = await api.rpc('inventario'); }
+      else { const o = LS.get('dogo_cfg_compra', {}); o[id] = c; LS.set('dogo_cfg_compra', o); }
+      b.textContent = 'Guardado'; setTimeout(() => compras(), 700);
+    } catch (err) { alert('No se guardó: ' + err.message); }
+  });
+
+  /* ---------- EQUIPO ---------- */
+  async function equipo() {
+    const panelUrl = new URL('panel.html', location.href).href;
+    if (!api.activo) {
+      $('#eq-cuenta').textContent = 'demo';
+      $('#t-equipo').innerHTML = `<tr><td><b>Dueño</b> <span class="pill neu">tú</span></td><td>dueno@ejemplo.com</td><td>Dueño</td><td></td></tr><tr><td><b>Carla</b></td><td>carla@ejemplo.com</td><td>Equipo</td><td></td></tr>`;
+      $('#t-invit').innerHTML = '<tr><td colspan="6" class="vacio">En la demo no se envían invitaciones: se activan con la base de datos.</td></tr>';
+      return;
+    }
+    try {
+      const e = await api.rpc('equipo_lista');
+      $('#eq-cuenta').textContent = `${e.miembros.length} con acceso`;
+      $('#t-equipo').innerHTML = e.miembros.map(m => `<tr><td><b>${esc(m.nombre)}</b>${m.yo ? ' <span class="pill neu">tú</span>' : ''}</td><td>${esc(m.correo)}</td>
+        <td>${m.yo ? 'Dueño' : `<select class="estado" data-rol="${m.user_id}"><option value="ventas" ${m.rol === 'ventas' ? 'selected' : ''}>Equipo</option><option value="admin" ${m.rol === 'admin' ? 'selected' : ''}>Dueño</option></select>`}</td>
+        <td>${m.yo ? '' : `<button class="btn btn-2" type="button" data-quitar="${m.user_id}" data-nombre="${esc(m.nombre)}">Quitar</button>`}</td></tr>`).join('');
+      $('#t-invit').innerHTML = e.invitaciones.map(i => `<tr><td>${esc(i.nombre)}</td><td>${esc(i.correo)}</td><td>${i.rol === 'admin' ? 'Dueño' : 'Equipo'}</td><td><code>${i.codigo}</code></td><td>${fechaH(i.expira)}</td>
+        <td><a class="btn btn-wa" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(msgInv(i, panelUrl))}">WhatsApp</a> <button class="btn btn-2" type="button" data-cancelar="${i.id}">Cancelar</button></td></tr>`).join('')
+        || '<tr><td colspan="6" class="vacio">No hay invitaciones pendientes.</td></tr>';
+    } catch (err) { $('#t-equipo').innerHTML = `<tr><td colspan="4" class="vacio">${esc(err.message)}</td></tr>`; }
+  }
+  const msgInv = (i, url) => `Hola ${i.nombre}, te invito al panel de ${T.nombre}.\n1. Entra a ${url}\n2. Toca «¿Te invitaron al equipo? Usa tu código»\n3. Correo: ${i.correo}\n4. Crea tu clave (mínimo 8 caracteres) y escribe el código: ${i.codigo}\nEl código vence en 72 horas.`;
+  $('#f-invitar').addEventListener('submit', async e => {
+    e.preventDefault(); $('#i-err').textContent = '';
+    if (!api.activo) { $('#i-err').textContent = 'En la demo no se envían invitaciones.'; return; }
+    try {
+      const nombre = $('#i-nombre').value.trim(), r = await api.rpc('invitacion_crear', { p_correo: $('#i-correo').value.trim(), p_nombre: nombre, p_rol: $('#i-rol').value });
+      const i = { nombre, correo: r.correo, codigo: r.codigo }, txt = msgInv(i, new URL('panel.html', location.href).href);
+      $('#i-ok').classList.remove('oculto');
+      $('#i-ok').innerHTML = `<b>Invitación lista para ${esc(nombre)}</b><span>Código: <code>${r.codigo}</code> · vence en 72 horas</span>
+        <a class="btn btn-wa" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(txt)}">Enviar por WhatsApp</a>`;
+      e.target.reset(); equipo();
+    } catch (err) { $('#i-err').textContent = err.message; }
+  });
+  $('#t-equipo').addEventListener('change', async e => {
+    const s2 = e.target.closest('[data-rol]'); if (!s2) return;
+    try { await api.rpc('equipo_rol', { p_user: s2.dataset.rol, p_rol: s2.value }); } catch (err) { alert(err.message); } equipo();
+  });
+  document.addEventListener('click', async e => {
+    const q = e.target.closest('[data-quitar]'), c = e.target.closest('[data-cancelar]');
+    if (q && confirm(`¿Quitar el acceso de ${q.dataset.nombre}? Ya no podrá entrar al panel.`)) { try { await api.rpc('equipo_quitar', { p_user: q.dataset.quitar }); } catch (err) { alert(err.message); } equipo(); }
+    if (c) { try { await api.rpc('invitacion_cancelar', { p_id: +c.dataset.cancelar }); } catch (err) { alert(err.message); } equipo(); }
+  });
+
   /* ---------- navegación ---------- */
-  const TIT = { resumen: 'Resumen', pedidos: 'Pedidos', productos: 'Precios y márgenes', marketing: 'Marketing', clientes: 'Clientes' };
+  const TIT = { resumen: 'Resumen', pedidos: 'Pedidos', compras: 'Compras', productos: 'Precios y márgenes', marketing: 'Marketing', clientes: 'Clientes', equipo: 'Equipo' };
   function pintar() {
+    document.querySelectorAll('[data-solo-admin]').forEach(b => b.hidden = !ADM);
+    document.querySelectorAll('.solo-admin').forEach(b => b.hidden = !ADM);
+    if (!ADM && (tab === 'productos' || tab === 'equipo')) tab = 'resumen';
     const [d0, d1] = rango();
     $('#titulo').firstChild.textContent = TIT[tab];
-    $('#rango').textContent = `${fecha(d0)} – ${fecha(d1 - 1)} · comparado con los ${dias} días anteriores`;
+    $('#rango').textContent = tab === 'compras' ? 'Proyección para la próxima semana con tus ventas semanales' : tab === 'equipo' ? 'Quién puede entrar a este panel'
+      : `${fecha(d0)} – ${fecha(d1 - 1)} · comparado con los ${dias} días anteriores`;
+    $('#periodo').hidden = tab === 'compras' || tab === 'equipo';
     $('#aviso').style.display = conEjemplo ? '' : 'none';
     if (api.activo) $('#aviso').textContent = 'Estás viendo datos de ejemplo junto a tus pedidos reales. Desmarca “Datos de ejemplo” para ver solo los tuyos.';
     document.querySelectorAll('[data-panel]').forEach(s => s.classList.toggle('oculto', s.dataset.panel !== tab));
     document.querySelectorAll('[data-tab]').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tab));
-    ({ resumen, pedidos, productos: precios, marketing, clientes: vistaClientes })[tab]();
-    badge();
+    ({ resumen, pedidos, compras, productos: precios, marketing, clientes: vistaClientes, equipo })[tab]();
+    badge(); badgeCompras();
   }
   document.addEventListener('click', e => {
     const t = e.target.closest('[data-tab],[data-ir]'); if (!t) return;
